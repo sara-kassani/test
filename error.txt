@@ -1,3 +1,6 @@
+paperspace@pstfx76j0:~/0.HC_Russion_DataAug$ python train.py --device-ids 0 --batch-size 16 --fold 1 --workers 12 --lr 0.0001 --n-epochs 10 --type binary --jaccard-weight 1
+num train = 2998, num_val = 998
+Epoch 1, lr 0.0001:   0%|                              | 0/3008 [00:00<?, ?it/s]THCudaCheck FAIL file=/opt/conda/conda-bld/pytorch_1525909934016/work/aten/src/THC/generic/THCStorage.cu line=58 error=2 : out of memory
 Traceback (most recent call last):
   File "train.py", line 128, in <module>
     main()
@@ -13,5 +16,4 @@ Traceback (most recent call last):
     result = self.forward(*input, **kwargs)
   File "/home/paperspace/0.HC_Russion_DataAug/models.py", line 388, in forward
     x_out = up(torch.cat([x_out, x_skip], 1))
-RuntimeError: invalid argument 0: Sizes of tensors must match except in dimension 1. Got 67 and 64 in dimension 2 at /opt/conda/conda-bld/pytorch_1525909934016/work/aten/src/THC/generic/THCTensorMath.cu:111
-
+RuntimeError: cuda runtime error (2) : out of memory at /opt/conda/conda-bld/pytorch_1525909934016/work/aten/src/THC/generic/THCStorage.cu:58
