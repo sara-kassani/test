@@ -1,19 +1,48 @@
-paperspace@pstfx76j0:~/0.HC_Russion_DataAug$ python train.py --device-ids 0 --batch-size 16 --fold 1 --workers 12 --lr 0.0001 --n-epochs 10 --type binary --jaccard-weight 1
+paperspace@pstfx76j0:~/0.HC_Russion_DataAug$ python train.py --device-ids 0 --batch-size 4 --fold 1 --workers 12 --lr 0.0001 --n-epochs 10 --type binary --jaccard-weight 1
 num train = 2998, num_val = 998
-Epoch 1, lr 0.0001:   0%|                              | 0/3008 [00:00<?, ?it/s]THCudaCheck FAIL file=/opt/conda/conda-bld/pytorch_1525909934016/work/aten/src/THC/generic/THCStorage.cu line=58 error=2 : out of memory
-Traceback (most recent call last):
+Epoch 1, lr 0.0001:   0%|                    | 4/3000 [00:15<3:07:43,  3.76s/it]/home/paperspace/0.HC_Russion_DataAug/utils.py:76: UserWarning: invalid index of a 0-dim tensor. This will be an error in PyTorch 0.5. Use tensor.item() to convert a 0-dim tensor to a Python number
+  losses.append(loss.data[0])
+Epoch 1, lr 0.0001:   1%|       | 44/3000 [00:22<13:39,  3.61it/s, loss=2.14957]Traceback (most recent call last):
   File "train.py", line 128, in <module>
     main()
   File "train.py", line 123, in main
     num_classes=num_classes
-  File "/home/paperspace/0.HC_Russion_DataAug/utils.py", line 68, in train
-    outputs = model(inputs)
-  File "/home/paperspace/anaconda3/lib/python3.6/site-packages/torch/nn/modules/module.py", line 491, in __call__
-    result = self.forward(*input, **kwargs)
-  File "/home/paperspace/anaconda3/lib/python3.6/site-packages/torch/nn/parallel/data_parallel.py", line 112, in forward
-    return self.module(*inputs[0], **kwargs[0])
-  File "/home/paperspace/anaconda3/lib/python3.6/site-packages/torch/nn/modules/module.py", line 491, in __call__
-    result = self.forward(*input, **kwargs)
-  File "/home/paperspace/0.HC_Russion_DataAug/models.py", line 388, in forward
-    x_out = up(torch.cat([x_out, x_skip], 1))
-RuntimeError: cuda runtime error (2) : out of memory at /opt/conda/conda-bld/pytorch_1525909934016/work/aten/src/THC/generic/THCStorage.cu:58
+  File "/home/paperspace/0.HC_Russion_DataAug/utils.py", line 80, in train
+    write_event(log, step, loss=mean_loss)
+  File "/home/paperspace/0.HC_Russion_DataAug/utils.py", line 26, in write_event
+    log.write(json.dumps(data, sort_keys=True))
+  File "/home/paperspace/anaconda3/lib/python3.6/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/home/paperspace/anaconda3/lib/python3.6/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/home/paperspace/anaconda3/lib/python3.6/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/paperspace/anaconda3/lib/python3.6/json/encoder.py", line 180, in default
+    o.__class__.__name__)
+TypeError: Object of type 'float32' is not JSON serializable
+
+paperspace@pstfx76j0:~/0.HC_Russion_DataAug$ 
+paperspace@pstfx76j0:~/0.HC_Russion_DataAug$ python train.py --device-ids 0 --batch-size 4 --fold 1 --workers 12 --lr 0.0001 --n-epochs 10 --type binary --jaccard-weight 1
+num train = 2998, num_val = 998
+Epoch 1, lr 0.0001:   0%|                    | 4/3000 [00:15<3:16:23,  3.93s/it]/home/paperspace/0.HC_Russion_DataAug/utils.py:76: UserWarning: invalid index of a 0-dim tensor. This will be an error in PyTorch 0.5. Use tensor.item() to convert a 0-dim tensor to a Python number
+  losses.append(loss.data[0])
+Epoch 1, lr 0.0001:   1%|       | 44/3000 [00:22<13:52,  3.55it/s, loss=2.22270]Traceback (most recent call last):
+  File "train.py", line 128, in <module>
+    main()
+  File "train.py", line 123, in main
+    num_classes=num_classes
+  File "/home/paperspace/0.HC_Russion_DataAug/utils.py", line 80, in train
+    write_event(log, step, loss=mean_loss)
+  File "/home/paperspace/0.HC_Russion_DataAug/utils.py", line 26, in write_event
+    log.write(json.dumps(data, sort_keys=True))
+  File "/home/paperspace/anaconda3/lib/python3.6/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/home/paperspace/anaconda3/lib/python3.6/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/home/paperspace/anaconda3/lib/python3.6/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/paperspace/anaconda3/lib/python3.6/json/encoder.py", line 180, in default
+    o.__class__.__name__)
+TypeError: Object of type 'float32' is not JSON serializable
+
+paperspace@pstfx76j0:~/0.HC_Russion_DataAug$ 
