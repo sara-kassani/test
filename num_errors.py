@@ -110,7 +110,18 @@ print(accuracy_score(y_true, y_pred))
 from tensorflow.python.client import device_lib
 device_lib.list_local_devices()
 ####################################################################################################################
+test_generator = test_datagen.flow_from_directory(
+    validation_data_dir,
+    target_size=(img_width, img_height),
+    color_mode='landsat',
+    batch_size=5000,
+    class_mode='binary')
 
+X_test = test_generator.next()
+
+y_pred = model.predict(X_test[0])
+y_true = X_test[1]
+roc_auc_score(y_true, y_pred)
 
 
 ####################################################################################################################
