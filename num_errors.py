@@ -42,3 +42,18 @@ for i in range(len(errors)):
     plt.title(title)
     plt.imshow(original)
     plt.show()
+#################################################################################################################
+fnames = validation_generator2.filenames
+ 
+ground_truth = validation_generator2.classes
+ 
+label2index = validation_generator2.class_indices
+ 
+# Getting the mapping from class index to class label
+idx2label = dict((v,k) for k,v in label2index.items())
+prob = model.predict_generator(validation_generator2)
+predictions=np.argmax(prob,axis=1)
+
+errors = np.where(predictions != ground_truth)[0]
+print("No of errors = {}/{}".format(len(errors),nb_validation_samples))
+####################################################################################################################
