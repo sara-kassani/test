@@ -87,7 +87,24 @@ print("No of errors = {}/{}".format(len(errors),testing_generator.samples))
 print(str(len(errors)/testing_generator.samples) + "%")
 ####################################################################################################################
 
+probabilities = model.predict_generator(test_generator, 600)
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+import numpy as np
+y_true = np.array([0] * 100 + [1] * 100 + [2] * 100 + [3] * 100 + [4] *100 + [5] *100 )
+#y_pred = probabilities > 0.5
+print(probabilities)
+y_pred = np.asarray(probabilities)
+y_pred = np.argmax(probabilities,axis=1)
 
+print(y_pred)
+
+print(y_true)
+
+#print(np.shape(probabilities))
+print(confusion_matrix(y_true, y_pred))
+
+print(accuracy_score(y_true, y_pred))
 
 ####################################################################################################################
 
