@@ -57,3 +57,90 @@ predictions=np.argmax(prob,axis=1)
 errors = np.where(predictions != ground_truth)[0]
 print("No of errors = {}/{}".format(len(errors),nb_validation_samples))
 ####################################################################################################################
+testing_generator = validation_datagen.flow_from_directory(
+        test_dir,
+        target_size=(height, width),
+        batch_size=val_batchsize,
+        class_mode='categorical',
+        shuffle=False)
+ 
+# Get the filenames from the generator
+fnames = testing_generator.filenames
+ 
+# Get the ground truth from generator
+ground_truth = testing_generator.classes
+ 
+# Get the label to class mapping from the generator
+label2index = testing_generator.class_indices
+ 
+# Getting the mapping from class index to class label
+idx2label = dict((v,k) for k,v in label2index.items())
+ 
+# Get the predictions from the model using the generator
+predictions = model.predict_generator(testing_generator, 
+                                      steps=testing_generator.samples/testing_generator.batch_size,
+                                      verbose=1)
+predicted_classes = np.argmax(predictions,axis=1)
+ 
+errors = np.where(predicted_classes != ground_truth)[0]
+print("No of errors = {}/{}".format(len(errors),testing_generator.samples))
+print(str(len(errors)/testing_generator.samples) + "%")
+####################################################################################################################
+
+
+
+####################################################################################################################
+
+
+####################################################################################################################
+
+
+
+####################################################################################################################
+
+
+
+####################################################################################################################
+
+
+
+
+
+
+
+####################################################################################################################
+
+
+####################################################################################################################
+
+
+
+####################################################################################################################
+
+
+
+####################################################################################################################
+
+
+
+
+
+
+####################################################################################################################
+
+
+####################################################################################################################
+
+
+
+####################################################################################################################
+
+
+
+####################################################################################################################
+
+
+
+
+
+
