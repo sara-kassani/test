@@ -1,3 +1,17 @@
+print("OS: ", sys.platform)
+print("Python: ", sys.version)
+print("Keras: ", K.__version__)
+print("Numpy: ", np.__version__)
+print("Tensorflow: ", tensorflow.__version__)
+print(K.backend.backend())
+print(K.backend.image_data_format())
+print("GPU: ", get_gpu_name())
+print(get_cuda_version())
+print("CuDNN Version ", get_cudnn_version())
+
+
+
+##########################################################################################################################
 # Create a generator for prediction
 validation_generator = validation_datagen.flow_from_directory(
         validation_dir,
