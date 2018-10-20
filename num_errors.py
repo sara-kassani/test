@@ -10,7 +10,10 @@ print(get_cuda_version())
 print("CuDNN Version ", get_cudnn_version())
 
 
-
+CPU_COUNT = multiprocessing.cpu_count()
+GPU_COUNT = len(get_gpu_name())
+print("CPUs: ", CPU_COUNT)
+print("GPUs: ", GPU_COUNT)
 ##########################################################################################################################
 # Create a generator for prediction
 validation_generator = validation_datagen.flow_from_directory(
