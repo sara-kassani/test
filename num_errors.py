@@ -345,9 +345,13 @@ accuracy = float(correct)/float(len(test_generator.filenames))
 print(accuracy)
 
 ####################################################################################################################
+##### Learn
 
+history = model.fit_generator(datagen.flow(train_X, train_y, batch_size=128),
+epochs=100, validation_data=(valid_X, valid_y), workers=4)
 
-
+pred_y = model.predict(test_X)
+pred_y = np.argmax(pred_y, 1)
 ####################################################################################################################
 
 
