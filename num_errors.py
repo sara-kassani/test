@@ -215,6 +215,13 @@ print('Accuracy: {}'.format(accuracy_score(classes[np.argmax(y_test, axis=1)], p
 
 ####################################################################################################################
 
+class_test=model_emotion.predict_classes(X_test)
+
+
+classes = np.array(range(0,7))
+classes
+accuracy_score(classes[np.argmax(Y_test, axis=1)], class_test)
+
 
 ####################################################################################################################
 
