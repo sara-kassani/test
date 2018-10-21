@@ -296,6 +296,21 @@ history = model.fit_generator(
 ####################################################################################################################
 
 
+import numpy as np
+from tqdm import tqdm
+train_set.reset()
+n_steps = train_set.n // train_set.batch_size
+y_preds = []
+y_true = []
+for i in tqdm(range(n_steps)):
+    x_batch, y_batch = test_set.next()
+    preds = classifier.predict(x_batch)
+    y_preds.extend([np.argmax(pred) for pred in preds])
+    y_true.extend([np.argmax(y) for y in y_batch])
+
+from sklearn.metrics import f1_score
+f1 = f1_score(y_true, y_preds, average='macro')
+print('F1: {:.3f}'.format(f1))
 
 
 
