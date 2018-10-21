@@ -354,6 +354,16 @@ pred_y = model.predict(test_X)
 pred_y = np.argmax(pred_y, 1)
 ####################################################################################################################
 
+model.fit_generator(datagen.flow(x_train, y_train,
+                        batch_size=batch_size),
+                        epochs=epochs,
+                        workers=4)
+
+y_pred = np.argmax(model.predict(x_test), axis=-1)
+print(precision_score(y_test, y_pred, average='macro'))
+print(recall_score(y_test, y_pred, average='macro'))
+print(accuracy_score(y_test, y_pred))
+print(f1_score(y_test, y_pred, average='macro'))
 
 
 
