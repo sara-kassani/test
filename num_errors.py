@@ -1,3 +1,30 @@
+from keras.applications import DenseNet201
+model = DenseNet201(weights = "imagenet", include_top=False, input_shape = (img_rows, img_cols, 3))
+
+from keras.layers import Flatten, Dense, Dropout, BatchNormalization
+from keras.regularizers import l2
+#Adding custom Layers 
+x = model.output
+x = Flatten()(x)
+x = Dense(2048, activation="elu", kernel_regularizer=l2(0.0001), bias_regularizer=l2(0.0001))(x)
+x = BatchNormalization()(x)
+# x = Dropout(0.5)(x)
+x = Dense(1024, activation="elu", kernel_regularizer=l2(0.0001), bias_regularizer=l2(0.0001))(x)
+x = BatchNormalization()(x)
+# x = Dropout(0.5)(x)
+predictions = Dense(1, activation="sigmoid", kernel_regularizer=l2(0.0001), bias_regularizer=l2(0.0001))(x)
+
+from keras.models import Model
+# creating the final model 
+model_final = Model(input = model.input, output = predictions)
+
+
+
+
+
+
+
+###########################################################################################################################
 print("OS: ", sys.platform)
 print("Python: ", sys.version)
 print("Keras: ", K.__version__)
