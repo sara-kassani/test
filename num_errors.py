@@ -238,7 +238,60 @@ print(f1_score(y_test, y_pred, average='macro'))
 
 ####################################################################################################################
 
+import keras.backend as K
 
+def f1_score(y_true, y_pred):
+
+    # Count positive samples.
+    c1 = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    c2 = K.sum(K.round(K.clip(y_pred, 0, 1)))
+    c3 = K.sum(K.round(K.clip(y_true, 0, 1)))
+
+    # If there are no true samples, fix the F1 score at 0.
+    if c3 == 0:
+        return 0
+
+    # How many selected items are relevant?
+    precision = c1 / c2
+
+    # How many relevant items are selected?
+    recall = c1 / c3
+
+    # Calculate f1_score
+    f1_score = 2 * (precision * recall) / (precision + recall)
+    return f1_score
+
+def recall_score(y_true, y_pred):
+
+    # Count positive samples.
+    c1 = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    c2 = K.sum(K.round(K.clip(y_pred, 0, 1)))
+    c3 = K.sum(K.round(K.clip(y_true, 0, 1)))
+
+    # If there are no true samples, fix the F1 score at 0.
+    if c3 == 0:
+        return 0
+
+    # How many relevant items are selected?
+    recall_score = c1 / c3
+
+    return recall_score
+
+
+# Train the model
+
+# compile the model
+model.compile(loss='categorical_crossentropy',
+             optimizer=optimizers.RMSprop(lr=1e-4,decay=0.9),
+             metrics=['accuracy',f1_score,recall_score])
+
+# Train the model
+history = model.fit_generator(
+      train_generator,
+      steps_per_epoch=train_generator.samples/train_generator.batch_size ,
+      epochs=30,
+      validation_data=validation_generator,
+      validation_steps=validation_generator.samples/validation_generator.batch_size, verbose=1)
 
 ####################################################################################################################
 
