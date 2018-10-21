@@ -353,6 +353,7 @@ epochs=100, validation_data=(valid_X, valid_y), workers=4)
 pred_y = model.predict(test_X)
 pred_y = np.argmax(pred_y, 1)
 ####################################################################################################################
+from sklearn.metrics import precision_score, recall_score, accuracy_score, f1_score
 
 model.fit_generator(datagen.flow(x_train, y_train,
                         batch_size=batch_size),
