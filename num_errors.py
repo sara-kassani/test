@@ -194,8 +194,20 @@ return tn / (tn + fp)
 print_all_metrics(y_true,y_pred)
 
 ####################################################################################################################
+####################################################################################################################
+####################################################################################################################
+model.fit(x_train, y_train, nb_epoch=5, batch_size=64, class_weight=myclass_weight)
 
-
+	#Evaluate the scores of the model
+	scores = model.evaluate(x_test, y_test, verbose=0)
+	print("Accuracy: %.2f%%" % (scores[1]*100))
+	probas = model.predict(x_test)
+	pred_indices = np.argmax(probas, axis=1)
+	classes = np.array(range(0,9))
+	preds = classes[pred_indices]
+	#model.save('../models/cnn_model4.h5')
+	print('Log loss: {}'.format(log_loss(classes[np.argmax(y_test, axis=1)], probas)))
+print('Accuracy: {}'.format(accuracy_score(classes[np.argmax(y_test, axis=1)], preds))) 
 
 
 
