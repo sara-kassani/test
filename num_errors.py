@@ -384,7 +384,8 @@ print(f1_score(y_test, y_pred, average='macro'))
 
 ####################################################################################################################
 
-
+model.compile(loss='categorical_crossentropy', optimizer='rmsprop',
+metrics = ['categorical_accuracy', 'precision', 'recall', 'fmeasure'])
 
 ####################################################################################################################
 
