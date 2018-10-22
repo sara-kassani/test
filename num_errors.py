@@ -1,3 +1,13 @@
+import warnings
+warnings.filterwarnings('always')
+warnings.filterwarnings('ignore')
+###########################################################################################################################
+
+
+
+
+###########################################################################################################################
+
 from keras.applications import DenseNet201
 model = DenseNet201(weights = "imagenet", include_top=False, input_shape = (img_rows, img_cols, 3))
 
