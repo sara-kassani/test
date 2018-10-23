@@ -2,7 +2,18 @@ import warnings
 warnings.filterwarnings('always')
 warnings.filterwarnings('ignore')
 ###########################################################################################################################
-
+# plot the training loss and accuracy
+plt.style.use("ggplot")
+plt.figure()
+N = epochs
+plt.plot(np.arange(0, N), History.history["loss"], label="train_loss")
+plt.plot(np.arange(0, N), History.history["val_loss"], label="val_loss")
+plt.plot(np.arange(0, N), History.history["acc"], label="train_acc")
+plt.plot(np.arange(0, N), History.history["val_acc"], label="val_acc")
+plt.title("Training Loss and Accuracy")
+plt.xlabel("Epoch #")
+plt.ylabel("Loss/Accuracy")
+plt.legend(loc="upper left")
 
 
 
