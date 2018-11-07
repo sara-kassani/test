@@ -13,8 +13,70 @@ from sklearn.manifold import TSNE
 
 tsne = TSNE(n_components=2, perplexity=20, random_state=1000)
 X_tsne = tsne.fit_transform(X)
+###########################################################################################################################
+#Reading in the dataset
+
+df = pd.read_csv('fraud_prediction.csv')
+
+#Dropping the target feature & the index
+
+df = df.drop(['Unnamed: 0', 'isFraud'], axis = 1)
+
+#Initializing K-means with 2 clusters
+
+k_means = KMeans(n_clusters = 2)
+
+#Fitting the model on the data
+
+k_means.fit(df)
+
+#Extracting labels 
+
+target_labels = k_means.predict(df)
+
+#Converting the labels to a series 
+
+target_labels = pd.Series(target_labels)
+
+#Merging the labels to the dataset
+
+df = pd.merge(df, pd.DataFrame(target_labels), left_index=True, right_index=True)
+
+#Renaming the target 
+
+df['fraud'] = df[0]
+df = df.drop([0], axis = 1)
 
 
+from sklearn.manifold import TSNE
+
+#Creating the features
+
+features = df.drop('fraud', axis = 1).values
+
+target = df['fraud'].values
+
+#Initialize a TSNE object
+
+tsne_object = TSNE()
+
+#Fit and transform the features using the TSNE object
+
+transformed = tsne_object.fit_transform(features)
+
+
+
+#Creating a t-SNE visualization
+
+x_axis = transformed[:,0]
+
+
+y_axis = transformed[:,1]
+
+
+plt.scatter(x_axis, y_axis, c = target)
+
+plt.show()
 
 
 
