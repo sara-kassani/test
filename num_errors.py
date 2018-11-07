@@ -2,6 +2,26 @@ import warnings
 warnings.filterwarnings('always')
 warnings.filterwarnings('ignore')
 ###########################################################################################################################
+import numpy as np
+
+from sklearn.datasets import load_digits
+
+digits = load_digits()
+X = digits['data'] / np.max(digits['data'])
+
+from sklearn.manifold import TSNE
+
+tsne = TSNE(n_components=2, perplexity=20, random_state=1000)
+X_tsne = tsne.fit_transform(X)
+
+
+
+
+
+
+
+
+###########################################################################################################################
 # plot the training loss and accuracy
 plt.style.use("ggplot")
 plt.figure()
