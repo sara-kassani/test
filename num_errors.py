@@ -1,6 +1,52 @@
 import warnings
 warnings.filterwarnings('always')
 warnings.filterwarnings('ignore')
+
+
+if K.image_data_format() == 'channels_first':
+    input_shape = (3, img_width, img_height)
+else:
+    input_shape = (img_width, img_height, 3)
+###########################################################################################################################
+def lr_schedule(epoch):
+    if epoch < 15:
+        return .01
+    elif epoch < 28:
+        return .002
+    else:
+        return .0004
+
+jobs_base_dir = 'jobs'
+job_name = 'vgg19_job'
+model_name = 'vgg19'
+job_path = "{}/{}".format(jobs_base_dir, job_name)
+tensorboard_dir = "{}/{}".format(job_path, "tensorboard")
+  
+weights_path = "{}/{}".format(job_path, "weights.{epoch:02d}-{val_loss:.2f}.hdf5")
+checkpointer = ModelCheckpoint(filepath=weights_path, verbose=1, save_best_only=True)
+csv_logger = CSVLogger("{}/{}.log".format(job_path, model_name))
+early_stopping = EarlyStopping(monitor='val_loss', verbose=1, patience=25)
+tensorboard = TensorBoard(log_dir="{}".format(tensorboard_dir), histogram_freq=0, batch_size=32, write_graph=True,
+                          write_grads=False,
+                          write_images=True, embeddings_freq=0, embeddings_layer_names=None, embeddings_metadata=None)
+lr_scheduler = LearningRateScheduler(lr_schedule)
+
+
+
+
+history = model.fit_generator(train_generator,
+#     steps_per_epoch=nb_train_samples // batch_size,
+    steps_per_epoch= 2048,
+    epochs = 50,
+    validation_data = validation_generator,
+#     validation_steps=nb_validation_samples // batch_size,
+    validation_steps = 1048,
+    callbacks=[lr_scheduler, csv_logger, checkpointer, tensorboard, early_stopping])
+###########################################################################################################################
+
+
+
+
 ###########################################################################################################################
 import numpy as np
 
