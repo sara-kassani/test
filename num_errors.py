@@ -5,6 +5,7 @@ sgd_opt = SGD(lr = 0.02, decay=75e-6, momentum=0.9, nesterov=True)
 adam_opt = Adam(lr=1e-5, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=1e-5)
 sgd_opt = SGD(lr=1e-06, momentum=0.0, decay=0.0, nesterov=False)
 
+rmsp_opt = RMSprop(lr=1e-4, decay=0.9)
 ###########################################################################################################################
 
 
