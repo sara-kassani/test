@@ -6,8 +6,11 @@ sgd_opt = SGD(lr=1e-06, momentum=0.0, decay=0.0, nesterov=False)
 
 rmsp_opt = RMSprop(lr=1e-4, decay=0.9)
 ###########################################################################################################################
+from keras import backend as K
+K.image_data_format()
 
-
+K.set_image_data_format('channels_first')
+K.image_data_format()
 ###########################################################################################################################
 from tensorflow.python.client import device_lib
 device_lib.list_local_devices()
