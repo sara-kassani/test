@@ -1,4 +1,10 @@
 
+
+###########################################################################################################################
+# softmax dense error
+prediction = Dense(output_classes, activation=tf.nn.softmax)(x)
+
+###########################################################################################################################
 sgd_opt = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
 
 adam_opt = Adam(lr=1e-5, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=1e-5)
@@ -183,13 +189,6 @@ predictions = Dense(1, activation="sigmoid", kernel_regularizer=l2(0.0001), bias
 from keras.models import Model
 # creating the final model 
 model_final = Model(input = model.input, output = predictions)
-
-
-
-
-
-
-
 ###########################################################################################################################
 print("OS: ", sys.platform)
 print("Python: ", sys.version)
@@ -374,20 +373,6 @@ model.fit(x_train, y_train, nb_epoch=5, batch_size=64, class_weight=myclass_weig
 	#model.save('../models/cnn_model4.h5')
 	print('Log loss: {}'.format(log_loss(classes[np.argmax(y_test, axis=1)], probas)))
 print('Accuracy: {}'.format(accuracy_score(classes[np.argmax(y_test, axis=1)], preds))) 
-
-
-
-
-
-####################################################################################################################
-
-class_test=model_emotion.predict_classes(X_test)
-
-
-classes = np.array(range(0,7))
-classes
-accuracy_score(classes[np.argmax(Y_test, axis=1)], class_test)
-
 
 ####################################################################################################################
 
