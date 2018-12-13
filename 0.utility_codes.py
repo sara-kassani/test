@@ -10,7 +10,22 @@
 
 ###########################################################################################################################
 
+from keras.applications import DenseNet201
 
+base_model = DenseNet201(weights='imagenet', include_top=False, input_tensor=Input(shape=input_shape))
+x = base_model.output
+x = GlobalAveragePooling2D()(x)
+x = Dense(1024, kernel_regularizer=l2(0.0001), bias_regularizer=l2(0.0001))(x)
+x = BatchNormalization()(x)
+x = Activation("relu")(x)
+x = Dropout(0.5)(x)
+x = Dense(1024, kernel_regularizer=l2(0.0001), bias_regularizer=l2(0.0001))(x)
+x = BatchNormalization()(x)
+x = Activation("relu")(x)
+x = Dropout(0.5)(x)
+prediction = Dense(output_classes, activation=tf.nn.softmax)(x)
+
+model = Model(inputs=base_model.input,outputs=prediction)
 ###########################################################################################################################
 
 
