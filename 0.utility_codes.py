@@ -4,8 +4,7 @@
 # softmax dense error
 prediction = Dense(output_classes, activation=tf.nn.softmax)(x)
 or 
-model.add(Lambda(lambda x: K.tf.nn.softmax(x)))
-from keras.layers import Dense, Activation, MaxPooling2D, Conv2D, Flatten, Dropout, Lambda
+model.add(Activation(tf.nn.softmax))
 
 ###########################################################################################################################
 sgd_opt = SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True)
