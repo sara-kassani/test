@@ -40,6 +40,13 @@
 
 ###########################################################################################################################
 
+from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
+from keras.models import *
+from keras.layers import *
+from keras.regularizers import *
+from keras.optimizers import *
+
+from keras import applications
 
 ###########################################################################################################################
 import keras
