@@ -44,6 +44,28 @@ X_train = np.asarray(X_train)
 y_train = np.asarray(y_train)
 y_train = np.argmax(y_train, axis=1)
 
+X_validation, y_validation = [], []
+for _ in tqdm(range(nb_validation_samples)):
+    x_val, y_val = validation_generator.next()
+    X_validation.append(x_val[0])
+    y_validation.append(y_val[0])
+X_validation = np.asarray(X_validation)
+y_validation = np.asarray(y_validation)
+y_validation = np.argmax(y_validation, axis=1)
+# np.save('data/npy/X_validation.npy', X_validation)
+# np.save('data/npy/y_validation.npy', y_validation)
+
+X_test, y_test = [], []
+for _ in tqdm(range(nb_test_samples)):
+    x_t, y_t = test_generator.next()
+    X_test.append(x_t[0])
+    y_test.append(y_t[0])
+X_test = np.asarray(X_test)
+y_test = np.asarray(y_test)
+y_test = np.argmax(y_test, axis=1)
+# np.save('data/npy/X_test.npy', X_test)
+# np.save('data/npy/y_test.npy', y_test)
+
 nb_train_samples = 386
 nb_validation_samples = 199
 nb_test_samples = 155
