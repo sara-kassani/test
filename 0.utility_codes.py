@@ -35,9 +35,18 @@
 ###########################################################################################################################
 
 ###########################################################################################################################
+X_train, y_train = [], []
+for _ in tqdm(range(nb_train_samples)):
+    x, y = train_generator.next()
+    X_train.append(x[0])
+    y_train.append(y[0])
+X_train = np.asarray(X_train)
+y_train = np.asarray(y_train)
+y_train = np.argmax(y_train, axis=1)
 
-
-
+nb_train_samples = 386
+nb_validation_samples = 199
+nb_test_samples = 155
 ###########################################################################################################################
 
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
