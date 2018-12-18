@@ -46,7 +46,30 @@
 
 ###########################################################################################################################
 
+    
+from keras.applications import ResNet50
+from keras.layers import Flatten, Dense, Dropout, BatchNormalization
+from keras.regularizers import l2
 
+model_dense_conv = ResNet50(weights='imagenet', include_top=False)  
+    #Create your own input format
+keras_input = Input(shape= input_shape, name = 'image_input')
+    
+    #Use the generated model 
+output_dense_conv = model_dense_conv(keras_input)
+    
+    #Add the fully-connected layers 
+x = Flatten(name='flatten')(output_dense_conv)
+x = Dense(1024, activation= 'relu', kernel_regularizer=l2(0.0001), bias_regularizer=l2(0.0001), name='fc1')(x)
+x = BatchNormalization()(x)
+x = Dropout(0.5)(x)
+x = Dense(1024, activation= 'relu', kernel_regularizer=l2(0.0001), bias_regularizer=l2(0.0001), name='fc2')(x)
+x = BatchNormalization()(x)
+x = Dropout(0.5)(x)
+x = Dense(output_classes, activation='softmax', kernel_regularizer=l2(0.0001), bias_regularizer=l2(0.0001), name='predictions')(x)
+    
+    #Create your own model 
+model = Model(inputs=keras_input, outputs=x)
 
 ###########################################################################################################################
 # extract the features from the second to the last fc layer
