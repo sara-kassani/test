@@ -42,8 +42,13 @@
 
 
 ###########################################################################################################################
+import keras
+import tensorflow as tf
+from keras import backend as K
 
-
+print("Keras Version:", keras.__version__)
+print("Tensorflow Version:", tf.__version__)
+print("image dim ordering:", K.image_dim_ordering())
 ###########################################################################################################################
 
     
