@@ -30,7 +30,9 @@
 
 ###########################################################################################################################
 
-
+from keras.models import load_model
+model = load_model("models/5.VGG19-Adam-Dropout-Model.h5")
+model.load_weights("models/VGG19-Adam-Dropout-Weights.h5")
 
 ###########################################################################################################################
 import _pickle as cPickle
