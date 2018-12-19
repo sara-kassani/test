@@ -27,6 +27,42 @@
 
 ###########################################################################################################################
 
+model = Sequential()
+
+model.add(
+    Conv2D(
+        filters=64,
+        kernel_size=(3, 3),
+        activation="relu",
+        input_shape=(224, 224, 3)))
+model.add(Conv2D(filters=64, kernel_size=(3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Conv2D(filters=128, kernel_size=(3, 3), activation="relu"))
+model.add(Conv2D(filters=128, kernel_size=(3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Conv2D(filters=256, kernel_size=(3, 3), activation="relu"))
+model.add(Conv2D(filters=256, kernel_size=(3, 3), activation="relu"))
+model.add(Conv2D(filters=256, kernel_size=(3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Conv2D(filters=512, kernel_size=(3, 3), activation="relu"))
+model.add(Conv2D(filters=512, kernel_size=(3, 3), activation="relu"))
+model.add(Conv2D(filters=512, kernel_size=(3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Conv2D(filters=512, kernel_size=(3, 3), activation="relu"))
+model.add(Conv2D(filters=512, kernel_size=(3, 3), activation="relu"))
+model.add(Conv2D(filters=512, kernel_size=(3, 3), activation="relu"))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Flatten())
+
+model.add(Dense(units=1024, activation="relu"))
+model.add(Dense(units=1024, activation="relu"))
+model.add(Dense(units=12, activation="softmax"))
+
 
 ###########################################################################################################################
 
