@@ -1,0 +1,326 @@
+NSID: mna372
+CMPT 214 lab12
+Student number: 11239014
+-----------------------------------------------------------------------
+Q1:
+
+mna372@tux8:~/214/214lab12> printenv | grep BLOCK
+mna372@tux8:~/214/214lab12> env BLOCK_SIZE='1M' du -s /usr/local/bin
+229     /usr/local/bin
+mna372@tux8:~/214/214lab12> du -s -m /usr/local/bin
+229     /usr/local/bin
+mna372@tux8:~/214/214lab12> printenv | grep BLOCK
+
+-----------------------------------------------------------------------
+Q2:
+
+mna372@tux8:~/214/214lab12> ulimit -a
+core file size          (blocks, -c) unlimited
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 514323
+max locked memory       (kbytes, -l) 16384
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) 8192
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 514323
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+
+------------------------------------------------------------------------
+Q3:
+
+----------------------------------------------------------
+(a)
+mna372@tux8:~/214/214lab12/Lab12Files> make
+cc -Wall -Wextra    power.c   -o power
+mna372@tux8:~/214/214lab12/Lab12Files> ./power infile.txt
+4 to the power of 5 is 1440
+Segmentation fault (core dumped)
+mna372@tux8:~/214/214lab12/Lab12Files> ls
+core.15914  infile.txt  makefile  power*  power.c
+
+----------------------------------------------------------
+
+(b)
+mna372@tux8:~/214/214lab12/Lab12Files> diff makefile makefile.org
+4c4
+< CFLAGS = -Wall -Wextra -g
+---
+> CFLAGS = -Wall -Wextra
+mna372@tux8:~/214/214lab12/Lab12Files> make -W power.c
+cc -Wall -Wextra -g    power.c   -o power
+
+----------------------------------------------------------
+
+(c)
+mna372@tux8:~/214/214lab12/Lab12Files> gdb power
+GNU gdb (GDB) Fedora 8.1.1-3.fc28
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from power...done.
+(gdb) run infile.txt
+Starting program: /student/mna372/214/214lab12/Lab12Files/power infile.txt
+4 to the power of 5 is 1440
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00000000004006e0 in swap (a=0x7fffffffd690, b=0x7fffffffd68c) at power.c:32
+32              *tmp = *a;
+(gdb) backtrace full
+#0  0x00000000004006e0 in swap (a=0x7fffffffd690, b=0x7fffffffd68c) at power.c:32
+        tmp = 0x0
+#1  0x0000000000400668 in main (argc=2, argv=0x7fffffffd788) at power.c:21
+        number = 4
+        power = 5
+        result = 1440
+        in_stream = 0x602260
+
+---------------------------------------------------------
+
+(d)
+(gdb) list 32
+27      }
+28
+29      void swap(int *a, int *b) {
+30              int *tmp=NULL;
+31
+32              *tmp = *a;
+33              *a = *b;
+34              *b = *tmp;
+35      }
+36
+(gdb) frame 0
+#0  0x00000000004006e0 in swap (a=0x7fffffffd690, b=0x7fffffffd68c) at power.c:32
+32              *tmp = *a;
+(gdb) print a
+$1 = (int *) 0x7fffffffd690
+(gdb) print b
+$2 = (int *) 0x7fffffffd68c
+(gdb) print tmp
+$3 = (int *) 0x0
+(gdb) print *a
+$4 = 4
+(gdb) print *b
+$5 = 5
+(gdb) print *tmp
+Cannot access memory at address 0x0
+(gdb) quit
+A debugging session is active.
+
+        Inferior 1 [process 17521] will be killed.
+
+Quit anyway? (y or n) y
+
+------------------------------------------------------
+
+(e)
+
+mna372@tux8:~/214/214lab12/Lab12Files> cp power.c power.org
+mna372@tux8:~/214/214lab12/Lab12Files> diff power.c power.org
+30c30
+<       int tmp;
+---
+>       int *tmp=NULL;
+32c32
+<       tmp = *a;
+---
+>       *tmp = *a;
+34c34
+<       *b = tmp;
+---
+>       *b = *tmp;
+mna372@tux8:~/214/214lab12/Lab12Files> make
+cc -Wall -Wextra -g    power.c   -o power
+mna372@tux8:~/214/214lab12/Lab12Files> ./power infile.txt
+4 to the power of 5 is 1440
+5 to the power of 4 is 2880
+6 to the power of 2 is 60
+2 to the power of 6 is 12
+3 to the power of 7 is 252
+7 to the power of 3 is 1260
+1 to the power of 7 is 1
+7 to the power of 1 is 7
+2 to the power of 3 is 6
+3 to the power of 2 is 12
+0 to the power of 0 is 1
+0 to the power of 0 is 1
+0 to the power of 2 is 0
+2 to the power of 0 is 1
+2 to the power of 0 is 1
+0 to the power of 2 is 0
+
+---------------------------------------------------
+
+(f)
+mna372@tux8:~/214/214lab12/Lab12Files> gdb power
+GNU gdb (GDB) Fedora 8.1.1-3.fc28
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from power...done.
+(gdb) break calc_pow
+Breakpoint 1 at 0x4006fd: file power.c, line 38.
+(gdb) run infile.txt
+Starting program: /student/mna372/214/214lab12/Lab12Files/power infile.txt
+
+Breakpoint 1, calc_pow (num=4, pow=5) at power.c:38
+38              if ( pow == 0 ) {
+(gdb) display num
+1: num = 4
+(gdb) display pow
+2: pow = 5
+(gdb) continue
+Continuing.
+
+Breakpoint 1, calc_pow (num=5, pow=3) at power.c:38
+38              if ( pow == 0 ) {
+1: num = 5
+2: pow = 3
+(gdb) continue
+Continuing.
+
+Breakpoint 1, calc_pow (num=3, pow=4) at power.c:38
+38              if ( pow == 0 ) {
+1: num = 3
+2: pow = 4
+(gdb) backtrace
+#0  calc_pow (num=3, pow=4) at power.c:38
+#1  0x000000000040071c in calc_pow (num=5, pow=3) at power.c:42
+#2  0x000000000040071c in calc_pow (num=4, pow=5) at power.c:42
+#3  0x0000000000400638 in main (argc=2, argv=0x7fffffffd788) at power.c:19
+(gdb) continue
+Continuing.
+
+Breakpoint 1, calc_pow (num=4, pow=2) at power.c:38
+38              if ( pow == 0 ) {
+1: num = 4
+2: pow = 2
+(gdb) backtrace
+#0  calc_pow (num=4, pow=2) at power.c:38
+#1  0x000000000040071c in calc_pow (num=3, pow=4) at power.c:42
+#2  0x000000000040071c in calc_pow (num=5, pow=3) at power.c:42
+#3  0x000000000040071c in calc_pow (num=4, pow=5) at power.c:42
+#4  0x0000000000400638 in main (argc=2, argv=0x7fffffffd788) at power.c:19
+
+---------------------------------------------------
+
+(g)
+
+mna372@tux8:~/214/214lab12/Lab12Files> cp power.c power.org
+mna372@tux8:~/214/214lab12/Lab12Files> diff power.c power.org
+42c42
+<               return num * calc_pow( num, pow-1 );
+---
+>               return num * calc_pow( pow, num-1 );
+mna372@tux8:~/214/214lab12/Lab12Files> make
+cc -Wall -Wextra -g    power.c   -o power
+mna372@tux8:~/214/214lab12/Lab12Files> ./power infile.txt
+4 to the power of 5 is 1024
+5 to the power of 4 is 625
+6 to the power of 2 is 36
+2 to the power of 6 is 64
+3 to the power of 7 is 2187
+7 to the power of 3 is 343
+1 to the power of 7 is 1
+7 to the power of 1 is 7
+2 to the power of 3 is 8
+3 to the power of 2 is 9
+0 to the power of 0 is 1
+0 to the power of 0 is 1
+0 to the power of 2 is 0
+2 to the power of 0 is 1
+2 to the power of 0 is 1
+0 to the power of 2 is 0
+
+---------------------------------------------------
+
+(h)
+mna372@tux8:~/214/214lab12/Lab12Files> gdb power
+GNU gdb (GDB) Fedora 8.1.1-3.fc28
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from power...done.
+(gdb) list 18,24
+18              while (fscanf(in_stream, "%d %d", &number, &power) != EOF) {
+19                      result = calc_pow(number, power);
+20                      printf("%d to the power of %d is %d\n", number, power, result);
+21                      swap(&number, &power);
+22                      result = calc_pow(number, power);
+23                      printf("%d to the power of %d is %d\n", number, power, result);
+24              }
+(gdb) break 18
+Breakpoint 1 at 0x400627: file power.c, line 18.
+(gdb) run < infile.txt
+Starting program: /student/mna372/214/214lab12/Lab12Files/power < infile.txt
+4 to the power of 5 is 1024
+5 to the power of 4 is 625
+6 to the power of 2 is 36
+2 to the power of 6 is 64
+3 to the power of 7 is 2187
+7 to the power of 3 is 343
+1 to the power of 7 is 1
+7 to the power of 1 is 7
+2 to the power of 3 is 8
+3 to the power of 2 is 9
+0 to the power of 0 is 1
+0 to the power of 0 is 1
+0 to the power of 2 is 0
+2 to the power of 0 is 1
+2 to the power of 0 is 1
+0 to the power of 2 is 0
+Breakpoint 1, main (argc=1, argv=0x7fffffffd7a8) at power.c:26
+26              return 0;
+
+---------------------------------------------------
+
+(i)
+(gdb) print in_stream
+$1 = (FILE *) 0x7ffff7dd0a00 <_IO_2_1_stdin_>
+(gdb) print sizeof(in_stream)
+$2 = 8
+(gdb) p *in_stream
+$7 = {_flags = -72540008, _IO_read_ptr = 0x602260 "4 5\n6 2\n3 7\n1 7\n2 3\n0 0\n0 2\n2 0\n",
+  _IO_read_end = 0x602260 "4 5\n6 2\n3 7\n1 7\n2 3\n0 0\n0 2\n2 0\n", _IO_read_base = 0x602260 "4 5\n6 2\n3 7\n1 7\n2 3\n0 0\n0 2\n2 0\n",
+  _IO_write_base = 0x602260 "4 5\n6 2\n3 7\n1 7\n2 3\n0 0\n0 2\n2 0\n", _IO_write_ptr = 0x602260 "4 5\n6 2\n3 7\n1 7\n2 3\n0 0\n0 2\n2 0\n",
+  _IO_write_end = 0x602260 "4 5\n6 2\n3 7\n1 7\n2 3\n0 0\n0 2\n2 0\n", _IO_buf_base = 0x602260 "4 5\n6 2\n3 7\n1 7\n2 3\n0 0\n0 2\n2 0\n",
+  _IO_buf_end = 0x604260 "", _IO_save_base = 0x0, _IO_backup_base = 0x0, _IO_save_end = 0x0, _markers = 0x0, _chain = 0x0, _fileno = 0,
+  _flags2 = 0, _old_offset = -1, _cur_column = 0, _vtable_offset = 0 '\000', _shortbuf = "", _lock = 0x7ffff7dd28d0 <_IO_stdfile_0_lock>,
+  _offset = -1, __pad1 = 0x0, __pad2 = 0x7ffff7dd0ae0 <_IO_wide_data_0>, __pad3 = 0x0, __pad4 = 0x0, __pad5 = 0, _mode = -1,
+  _unused2 = '\000' <repeats 19 times>}
