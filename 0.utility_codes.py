@@ -23,9 +23,42 @@
 
 
 ###########################################################################################################################
+# Generate training data using gpu:0
+with tf.device('/GPU:0'):
+        # Set up generator for training data
+        train_datagen = ImageDataGenerator(
+            rescale=1. / 255,
+            featurewise_center=True,
+            featurewise_std_normalization=True)
 
-with tf.device('/cpu:0'):
-	model = 
+        # Generate training data
+        train_generator = train_datagen.flow_from_directory(
+            train_dir,
+            target_size=(img_height, img_width),
+            batch_size=batch_size,
+            seed = random_seed,
+            shuffle = True,
+            class_mode='categorical')
+
+with tf.device('/GPU:1'):
+         # Generate validation data using gpu:1
+            validation_generator = train_datagen.flow_from_directory(
+                validation_dir,
+                target_size=(img_height, img_width),
+                batch_size=batch_size,
+                seed = random_seed,
+                shuffle = True,
+                class_mode='categorical')
+
+            test_datagen = ImageDataGenerator(rescale=1. / 255)
+
+            test_generator = test_datagen.flow_from_directory(
+                test_dir,
+                target_size=(img_height, img_width),
+                batch_size=batch_size,
+                seed = random_seed,
+                shuffle = False,
+                class_mode='categorical')
 
 ###########################################################################################################################
 
