@@ -1,0 +1,576 @@
+-----
+  1
+-----
+
+bash-4.4$ printenv | grep BLOCK
+BLOCKSIZE=1m
+bash-4.4$ unset BLOCKSIZE
+bash-4.4$ printenv | grep BLOCK
+bash-4.4$ 
+
+bash-4.4$ env BLOCK_SIZE=1M du -s /usr/local/bin
+229	/usr/local/bin
+bash-4.4$ du -s -m /usr/local/bin
+229	/usr/local/bin
+bash-4.4$ printenv | grep BLOCK
+bash-4.4$ 
+
+-----
+  2
+-----
+
+bash-4.4$ ulimit -a
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 514325
+max locked memory       (kbytes, -l) 16384
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) unlimited
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 514325
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+bash-4.4$ ulimit -c unlimited
+bash-4.4$ ulimit -a
+core file size          (blocks, -c) unlimited
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 514325
+max locked memory       (kbytes, -l) 16384
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) unlimited
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 514325
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+
+or
+
+bash-4.4$ ulimit -a
+core file size          (blocks, -c) unlimited
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 514325
+max locked memory       (kbytes, -l) 16384
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) unlimited
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 514325
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+
+or
+
+bash-4.4$ prlimit
+RESOURCE   DESCRIPTION                             SOFT      HARD UNITS
+AS         address space limit                unlimited unlimited bytes
+CORE       max core file size                 unlimited unlimited bytes
+CPU        CPU time                           unlimited unlimited seconds
+DATA       max data size                      unlimited unlimited bytes
+FSIZE      max file size                      unlimited unlimited bytes
+LOCKS      max number of file locks held      unlimited unlimited locks
+MEMLOCK    max locked-in-memory address space  16777216  16777216 bytes
+MSGQUEUE   max bytes in POSIX mqueues            819200    819200 bytes
+NICE       max nice prio allowed to raise             0         0 
+NOFILE     max number of open files                1024      4096 files
+NPROC      max number of processes               514325    514325 processes
+RSS        max resident set size              unlimited unlimited bytes
+RTPRIO     max real-time priority                     0         0 
+RTTIME     timeout for real-time tasks        unlimited unlimited microsecs
+SIGPENDING max number of pending signals         514325    514325 signals
+STACK      max stack size                     unlimited unlimited bytes
+
+----
+3(a)
+----
+
+bash-4.4$ cp power.org.c power.c
+bash-4.4$ make power
+cc -Wall -Wextra    power.c   -o power
+bash-4.4$ ./power infile.txt
+4 to the power of 5 is 1440
+Segmentation fault (core dumped)
+bash-4.4$ ls core.*
+core.20769
+bash-4.4$ 
+
+----
+3(b)
+----
+
+bash-4.4$ vi makefile
+
+// editing not shown
+
+bash-4.4$ diff makefile.org makefile
+4c4
+< CFLAGS = -Wall -Wextra
+---
+> CFLAGS = -Wall -Wextra -g
+bash-4.4$ 
+
+or
+
+bash-4.4$ diff -c makefile.org makefile
+*** makefile.org	Sat Dec  1 16:31:28 2018
+--- makefile	Sat Dec  1 16:31:45 2018
+***************
+*** 1,7 ****
+  # Makefile for Cmpt214 Lab 12
+  #  Author: Tony Kusalik
+  
+! CFLAGS = -Wall -Wextra
+  
+  # Example of using a conditional and an environment variable
+  # within a makefile.  Here we use a tar
+--- 1,7 ----
+  # Makefile for Cmpt214 Lab 12
+  #  Author: Tony Kusalik
+  
+! CFLAGS = -Wall -Wextra -g
+  
+  # Example of using a conditional and an environment variable
+  # within a makefile.  Here we use a tar
+bash-4.4$ 
+
+bash-4.4$ make -W power.c
+cc -Wall -Wextra -g    power.c   -o power
+bash-4.4$ 
+
+----
+3(c)
+----
+
+bash-4.4$ gdb power
+GNU gdb (GDB) Fedora 8.1.1-3.fc28
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from power...done.
+(gdb) run infile.txt
+Starting program: /faculty/kusalik/test/power/power infile.txt
+4 to the power of 5 is 1440
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00000000004006e0 in swap (a=0x7fffffffd8d0, b=0x7fffffffd8cc) at power.c:32
+32		*tmp = *a;
+(gdb) backtrace full
+#0  0x00000000004006e0 in swap (a=0x7fffffffd8d0, b=0x7fffffffd8cc)
+    at power.c:32
+        tmp = 0x0
+#1  0x0000000000400668 in main (argc=2, argv=0x7fffffffd9c8) at power.c:21
+        number = 4
+        power = 5
+        result = 1440
+        in_stream = 0x602260
+
+----
+3(d)
+----
+
+(gdb) list 32
+27	}
+28	
+29	void swap(int *a, int *b) {
+30		int *tmp=NULL;
+31	
+32		*tmp = *a;
+33		*a = *b;
+34		*b = *tmp;
+35	}
+36	
+(gdb) frame 0
+#0  0x00000000004006e0 in swap (a=0x7fffffffd8d0, b=0x7fffffffd8cc)
+    at power.c:32
+32		*tmp = *a;
+(gdb) print *a
+$1 = 4
+(gdb) print *b
+$2 = 5
+(gdb) print *tmp
+Cannot access memory at address 0x0
+(gdb) print a
+$3 = (int *) 0x7fffffffd8d0
+(gdb) print b
+$4 = (int *) 0x7fffffffd8cc
+(gdb) print *tmp
+Cannot access memory at address 0x0
+(gdb) print tmp
+$5 = (int *) 0x0
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 21046] will be killed.
+
+Quit anyway? (y or n) y
+bash-4.4$ 
+
+----
+3(e)
+----
+
+bash-4.4$ vi power.c
+
+// editing not shown
+
+bash-4.4$ diff power.org.c power.c
+30c30
+< 	int *tmp=NULL;
+---
+> 	int tmp;
+32c32
+< 	*tmp = *a;
+---
+> 	tmp = *a;
+34c34
+< 	*b = *tmp;
+---
+> 	*b = tmp;
+bash-4.4$ 
+
+or
+
+bash-4.4$ diff -c power.org.c power.c
+*** power.org.c	Wed Nov 29 19:55:04 2017
+--- power.c	Sat Dec  1 16:43:44 2018
+***************
+*** 27,37 ****
+  }
+  
+  void swap(int *a, int *b) {
+! 	int *tmp=NULL;
+  
+! 	*tmp = *a;
+  	*a = *b;
+! 	*b = *tmp;
+  }
+  
+  int calc_pow( int num, int pow ) {
+--- 27,37 ----
+  }
+  
+  void swap(int *a, int *b) {
+! 	int tmp;
+  
+! 	tmp = *a;
+  	*a = *b;
+! 	*b = tmp;
+  }
+  
+  int calc_pow( int num, int pow ) {
+bash-4.4$ 
+
+bash-4.4$ make power
+cc -Wall -Wextra -g    power.c   -o power
+bash-4.4$ ./power < infile.txt
+4 to the power of 5 is 1440
+5 to the power of 4 is 2880
+6 to the power of 2 is 60
+2 to the power of 6 is 12
+3 to the power of 7 is 252
+7 to the power of 3 is 1260
+1 to the power of 7 is 1
+7 to the power of 1 is 7
+2 to the power of 3 is 6
+3 to the power of 2 is 12
+0 to the power of 0 is 1
+0 to the power of 0 is 1
+0 to the power of 2 is 0
+2 to the power of 0 is 1
+2 to the power of 0 is 1
+0 to the power of 2 is 0
+bash-4.4$
+
+----
+3(f)
+----
+
+bash-4.4$ gdb power
+GNU gdb (GDB) Fedora 8.1.1-3.fc28
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from power...done.
+(gdb) break calc_pow
+Breakpoint 1 at 0x4006fd: file power.c, line 38.
+(gdb) run infile.txt
+Starting program: /faculty/kusalik/test/power/power infile.txt
+
+Breakpoint 1, calc_pow (num=4, pow=5) at power.c:38
+38		if ( pow == 0 ) {
+(gdb) display num
+1: num = 4
+(gdb) display pow
+2: pow = 5
+(gdb) c
+Continuing.
+
+Breakpoint 1, calc_pow (num=5, pow=3) at power.c:38
+38		if ( pow == 0 ) {
+1: num = 5
+2: pow = 3
+(gdb) c
+Continuing.
+
+Breakpoint 1, calc_pow (num=3, pow=4) at power.c:38
+38		if ( pow == 0 ) {
+1: num = 3
+2: pow = 4
+(gdb) c
+Continuing.
+
+Breakpoint 1, calc_pow (num=4, pow=2) at power.c:38
+38		if ( pow == 0 ) {
+1: num = 4
+2: pow = 2
+(gdb) bt
+#0  calc_pow (num=4, pow=2) at power.c:38
+#1  0x000000000040071c in calc_pow (num=3, pow=4) at power.c:42
+#2  0x000000000040071c in calc_pow (num=5, pow=3) at power.c:42
+#3  0x000000000040071c in calc_pow (num=4, pow=5) at power.c:42
+#4  0x0000000000400638 in main (argc=2, argv=0x7fffffffd9c8) at power.c:19 
+ .
+ .
+ .
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 23173] will be killed.
+
+Quit anyway? (y or n) y
+
+----
+3(g)
+----
+
+bash-4.4$ vi power.c
+
+// editing not shown
+
+bash-4.4$ diff power.fixed1.c power.c
+42c42
+< 		return num * calc_pow( pow, num-1 );
+---
+> 		return num * calc_pow( num, pow-1 );
+bash-4.4$ 
+
+or
+
+bash-4.4$ diff -c power.fixed1.c power.c
+*** power.fixed1.c	Wed Nov 29 19:54:35 2017
+--- power.c	Sat Dec  1 16:52:34 2018
+***************
+*** 39,44 ****
+  		return 1;
+  	} 
+  	else {
+! 		return num * calc_pow( pow, num-1 );
+  	} 
+  }
+--- 39,44 ----
+  		return 1;
+  	} 
+  	else {
+! 		return num * calc_pow( num, pow-1 );
+  	} 
+  }
+bash-4.4$ 
+
+bash-4.4$ make power
+cc -Wall -Wextra -g    power.c   -o power
+bash-4.4$ ./power infile.txt
+4 to the power of 5 is 1024
+5 to the power of 4 is 625
+6 to the power of 2 is 36
+2 to the power of 6 is 64
+3 to the power of 7 is 2187
+7 to the power of 3 is 343
+1 to the power of 7 is 1
+7 to the power of 1 is 7
+2 to the power of 3 is 8
+3 to the power of 2 is 9
+0 to the power of 0 is 1
+0 to the power of 0 is 1
+0 to the power of 2 is 0
+2 to the power of 0 is 1
+2 to the power of 0 is 1
+0 to the power of 2 is 0
+bash-4.4$
+
+----
+3(h)
+----
+
+bash-4.4$ gdb power
+bash-4.4$ gdb power
+GNU gdb (GDB) Fedora 8.1.1-3.fc28
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-redhat-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from power...done.
+(gdb) list 18,24
+18		while (fscanf(in_stream, "%d %d", &number, &power) != EOF) {
+19			result = calc_pow(number, power);
+20			printf("%d to the power of %d is %d\n", number, power, result);
+21			swap(&number, &power);
+22			result = calc_pow(number, power);
+23			printf("%d to the power of %d is %d\n", number, power, result);
+24		}
+(gdb) break 19
+Breakpoint 1 at 0x400629: file power.c, line 19.
+(gdb) run < infile.txt
+Starting program: /faculty/kusalik/test/power/power < infile.txt
+
+Breakpoint 1, main (argc=1, argv=0x7fffffffd9d8) at power.c:19
+19			result = calc_pow(number, power);
+(gdb) 
+
+----
+3(i)
+----
+
+(gdb) p in_stream
+$1 = (FILE *) 0x155555327a00 <_IO_2_1_stdin_>
+(gdb) p sizeof( in_stream )
+$2 = 8
+(gdb) ptype *in_stream 
+type = struct _IO_FILE {
+    int _flags;
+    char *_IO_read_ptr;
+    char *_IO_read_end;
+    char *_IO_read_base;
+    char *_IO_write_base;
+    char *_IO_write_ptr;
+    char *_IO_write_end;
+    char *_IO_buf_base;
+    char *_IO_buf_end;
+    char *_IO_save_base;
+    char *_IO_backup_base;
+    char *_IO_save_end;
+    struct _IO_marker *_markers;
+    struct _IO_FILE *_chain;
+    int _fileno;
+    int _flags2;
+    __off_t _old_offset;
+    unsigned short _cur_column;
+    signed char _vtable_offset;
+    char _shortbuf[1];
+    _IO_lock_t *_lock;
+    __off64_t _offset;
+---Type <return> to continue, or q <return> to quit---
+    void *__pad1;
+    void *__pad2;
+    void *__pad3;
+    void *__pad4;
+    size_t __pad5;
+    int _mode;
+    char _unused2[20];
+}
+
+----
+3(j)
+----
+
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 28266] will be killed.
+
+Quit anyway? (y or n) y
+
+-----
+  4
+-----
+
+tux4(16)% ./factor 30000000-31000000 | grep -E '^[0-9]+\W=\W[0-9]+$' | head -n 20
+30000001 = 30000001
+30000023 = 30000023
+30000037 = 30000037
+30000041 = 30000041
+30000049 = 30000049
+30000059 = 30000059
+30000071 = 30000071
+30000079 = 30000079
+30000083 = 30000083
+30000109 = 30000109
+30000133 = 30000133
+30000137 = 30000137
+30000149 = 30000149
+30000163 = 30000163
+30000167 = 30000167
+30000169 = 30000169
+30000193 = 30000193
+30000199 = 30000199
+30000247 = 30000247
+30000251 = 30000251
+
+or
+
+tux4(17)% ./factor 30000000-31000000 | grep -E '^([0-9]+)\W=\W\1$' | head -n 20
+30000001 = 30000001
+30000023 = 30000023
+30000037 = 30000037
+30000041 = 30000041
+30000049 = 30000049
+30000059 = 30000059
+30000071 = 30000071
+30000079 = 30000079
+30000083 = 30000083
+30000109 = 30000109
+30000133 = 30000133
+30000137 = 30000137
+30000149 = 30000149
+30000163 = 30000163
+30000167 = 30000167
+30000169 = 30000169
+30000193 = 30000193
+30000199 = 30000199
+30000247 = 30000247
+30000251 = 30000251
+
