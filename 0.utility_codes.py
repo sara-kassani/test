@@ -19,9 +19,14 @@
 
 
 ###########################################################################################################################
-
-
-
+for d in ['/device:GPU:0', '/device:GPU:1']:
+    with tf.device(d):
+        history = model.fit_generator(
+          train_generator,
+          steps_per_epoch = nb_train_samples // batch_size,
+          epochs = epochs,
+          validation_data = validation_generator,
+          validation_steps = nb_validation_samples // batch_size)
 ###########################################################################################################################
 # Generate training data using gpu:0
 with tf.device('/GPU:0'):
@@ -290,8 +295,6 @@ tensorboard = TensorBoard(log_dir="{}".format(tensorboard_dir), histogram_freq=0
 lr_scheduler = LearningRateScheduler(lr_schedule)
 
 
-
-
 history = model.fit_generator(train_generator,
 #     steps_per_epoch=nb_train_samples // batch_size,
     steps_per_epoch= 2048,
@@ -302,22 +305,6 @@ history = model.fit_generator(train_generator,
     callbacks=[lr_scheduler, csv_logger, checkpointer, tensorboard, early_stopping])
 ###########################################################################################################################
 
-
-
-
-###########################################################################################################################
-import numpy as np
-
-from sklearn.datasets import load_digits
-
-digits = load_digits()
-X = digits['data'] / np.max(digits['data'])
-
-from sklearn.manifold import TSNE
-
-tsne = TSNE(n_components=2, perplexity=20, random_state=1000)
-X_tsne = tsne.fit_transform(X)
-###########################################################################################################################
 #Reading in the dataset
 
 df = pd.read_csv('fraud_prediction.csv')
@@ -381,11 +368,6 @@ y_axis = transformed[:,1]
 plt.scatter(x_axis, y_axis, c = target)
 
 plt.show()
-
-
-
-
-
 
 ###########################################################################################################################
 # plot the training loss and accuracy
@@ -530,44 +512,8 @@ errors = np.where(predicted_classes != ground_truth)[0]
 print("No of errors = {}/{}".format(len(errors),testing_generator.samples))
 print(str(len(errors)/testing_generator.samples) + "%")
 ####################################################################################################################
-
-probabilities = model.predict_generator(test_generator, 600)
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
-import numpy as np
-y_true = np.array([0] * 100 + [1] * 100 + [2] * 100 + [3] * 100 + [4] *100 + [5] *100 )
-#y_pred = probabilities > 0.5
-print(probabilities)
-y_pred = np.asarray(probabilities)
-y_pred = np.argmax(probabilities,axis=1)
-
-print(y_pred)
-
-print(y_true)
-
-#print(np.shape(probabilities))
-print(confusion_matrix(y_true, y_pred))
-
-print(accuracy_score(y_true, y_pred))
-
-####################################################################################################################
 from tensorflow.python.client import device_lib
 device_lib.list_local_devices()
-####################################################################################################################
-test_generator = test_datagen.flow_from_directory(
-    validation_data_dir,
-    target_size=(img_width, img_height),
-    color_mode='landsat',
-    batch_size=5000,
-    class_mode='binary')
-
-X_test = test_generator.next()
-
-y_pred = model.predict(X_test[0])
-y_true = X_test[1]
-roc_auc_score(y_true, y_pred)
-
-
 ####################################################################################################################
 predictions = np.round(model_mura.predict_generator(test_generator, steps=3197//1))
 predictions = predictions.flatten()
@@ -609,97 +555,6 @@ model.fit(x_train, y_train, nb_epoch=5, batch_size=64, class_weight=myclass_weig
 	print('Log loss: {}'.format(log_loss(classes[np.argmax(y_test, axis=1)], probas)))
 print('Accuracy: {}'.format(accuracy_score(classes[np.argmax(y_test, axis=1)], preds))) 
 
-####################################################################################################################
-
-model.fit_generator(datagen.flow(x_train, y_train,
-                        batch_size=batch_size),
-                        epochs=epochs,
-                        workers=4)
-
-y_pred = np.argmax(model.predict(x_test), axis=-1)
-print(precision_score(y_test, y_pred, average='macro'))
-print(recall_score(y_test, y_pred, average='macro'))
-print(accuracy_score(y_test, y_pred))
-print(f1_score(y_test, y_pred, average='macro'))
-
-####################################################################################################################
-
-import keras.backend as K
-
-def f1_score(y_true, y_pred):
-
-    # Count positive samples.
-    c1 = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
-    c2 = K.sum(K.round(K.clip(y_pred, 0, 1)))
-    c3 = K.sum(K.round(K.clip(y_true, 0, 1)))
-
-    # If there are no true samples, fix the F1 score at 0.
-    if c3 == 0:
-        return 0
-
-    # How many selected items are relevant?
-    precision = c1 / c2
-
-    # How many relevant items are selected?
-    recall = c1 / c3
-
-    # Calculate f1_score
-    f1_score = 2 * (precision * recall) / (precision + recall)
-    return f1_score
-
-def recall_score(y_true, y_pred):
-
-    # Count positive samples.
-    c1 = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
-    c2 = K.sum(K.round(K.clip(y_pred, 0, 1)))
-    c3 = K.sum(K.round(K.clip(y_true, 0, 1)))
-
-    # If there are no true samples, fix the F1 score at 0.
-    if c3 == 0:
-        return 0
-
-    # How many relevant items are selected?
-    recall_score = c1 / c3
-
-    return recall_score
-
-
-# Train the model
-
-# compile the model
-model.compile(loss='categorical_crossentropy',
-             optimizer=optimizers.RMSprop(lr=1e-4,decay=0.9),
-             metrics=['accuracy',f1_score,recall_score])
-
-# Train the model
-history = model.fit_generator(
-      train_generator,
-      steps_per_epoch=train_generator.samples/train_generator.batch_size ,
-      epochs=30,
-      validation_data=validation_generator,
-      validation_steps=validation_generator.samples/validation_generator.batch_size, verbose=1)
-
-####################################################################################################################
-
-
-import numpy as np
-from tqdm import tqdm
-train_set.reset()
-n_steps = train_set.n // train_set.batch_size
-y_preds = []
-y_true = []
-for i in tqdm(range(n_steps)):
-    x_batch, y_batch = test_set.next()
-    preds = classifier.predict(x_batch)
-    y_preds.extend([np.argmax(pred) for pred in preds])
-    y_true.extend([np.argmax(y) for y in y_batch])
-
-from sklearn.metrics import f1_score
-f1 = f1_score(y_true, y_preds, average='macro')
-print('F1: {:.3f}'.format(f1))
-
-
-
 
 ####################################################################################################################
 model.fit(X_train, Y_train, validation_data=(X_valid,Y_valid),batch_size=32, \
@@ -708,30 +563,9 @@ score = model.evaluate(X_test, Y_test)
 result = model.predict(X_test)
 f1_score(Y_test, result, average='weighted')
 
-####################################################################################################################
-
-filenames = test_generator.filenames
-nb_samples = len(filenames)
-predict = classifier.predict_generator(test_generator,steps = nb_samples)
-
-pred_prob = np.argmax(predict, axis=-1) #multiple categories
-
-label_map = (training_set.class_indices)
-label_map = dict((v,k) for k,v in label_map.items()) #flip k,v
-predictions = [label_map[k] for k in pred_prob]
-
-correct, wrong = 0,0
-for ypred, ytrue in zip(predictions,test_generator.filenames):
-    if ypred== re.findall('[a-z]{1,2}', ytrue.split('_')[1])[0]:
-	correct +=1
-    else:
-	 wrong +=
-
-accuracy = float(correct)/float(len(test_generator.filenames))
-print(accuracy)
 
 ####################################################################################################################
-##### Learn
+
 
 history = model.fit_generator(datagen.flow(train_X, train_y, batch_size=128),
 epochs=100, validation_data=(valid_X, valid_y), workers=4)
@@ -752,20 +586,6 @@ print(recall_score(y_test, y_pred, average='macro'))
 print(accuracy_score(y_test, y_pred))
 print(f1_score(y_test, y_pred, average='macro'))
 
-
-
-####################################################################################################################
-from sklearn.metrics import precision_score, recall_score, accuracy_score, f1_score
-model.fit_generator(datagen.flow(x_train, y_train,
-                        batch_size=batch_size),
-                        epochs=epochs,
-                        workers=4)
-
-y_pred = np.argmax(model.predict(x_test), axis=-1)
-print(precision_score(y_test, y_pred, average='macro'))
-print(recall_score(y_test, y_pred, average='macro'))
-print(accuracy_score(y_test, y_pred))
-print(f1_score(y_test, y_pred, average='macro'))
 
 
 ####################################################################################################################
@@ -792,213 +612,3 @@ print(C_n)
 
 
 ####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-
-
-
-####################################################################################################################
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-
-
-
-####################################################################################################################
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-####################################################################################################################
-
-
-
-
-
-
