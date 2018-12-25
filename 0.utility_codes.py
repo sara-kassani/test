@@ -18,6 +18,8 @@
 
  X_train = np.zeros((num_train_samples, img_width, img_height, num_channels))
 input_shape = (img_width, img_height, 3)
+or 
+input_shape = (img_height, img_width, 3)
 ###########################################################################################################################
 for d in ['/device:GPU:0', '/device:GPU:1']:
     with tf.device(d):
