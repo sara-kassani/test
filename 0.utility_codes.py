@@ -12,7 +12,19 @@
 
 ###########################################################################################################################
 
-
+# Transfer Weights
+temp_weights = [layer.get_weights() for layer in new_model.layers]
+model = create_model(lr=0.0001,
+                     dropout_rate=[0.7],
+                     alpha=0.01)
+for j in range(len(temp_weights)):
+    model.layers[j].set_weights(temp_weights[j])
+    
+train_history = model.fit(x_train, y_train, verbose=1,
+                          batch_size=64,
+                          validation_data=(x_dev,y_dev), 
+                          epochs=100,
+                          callbacks=callback_list)
 
 ###########################################################################################################################
 
