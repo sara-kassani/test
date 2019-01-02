@@ -12,7 +12,7 @@
 
 ###########################################################################################################################
 
-# Transfer Weights 
+# Transfer Weights  
 temp_weights = [layer.get_weights() for layer in new_model.layers]
 model = create_model(lr=0.0001,
                      dropout_rate=[0.7],
