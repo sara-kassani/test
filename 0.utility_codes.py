@@ -5,7 +5,13 @@
 
 
 ###########################################################################################################################
+# replace and rename dataframe columns
 
+data.columns = [c.replace(' ', '_') for c in df.columns]
+data.columns = [c.replace('LOR_', 'LOR') for c in df.columns]
+data.columns = [c.replace('Chance_of_Admit_', 'Chance_of_Admit') for c in df.columns]
+data.columns = [c.replace('Chance_of_Admit', 'Admit') for c in df.columns]
+data.head()
 
 ###########################################################################################################################
 # AttributeError: 'str' object has no attribute 'decode'
