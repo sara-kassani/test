@@ -82,7 +82,7 @@ data.head()
 
 X = pd.get_dummies(X)
 ###########################################################################################################################
-# AttributeError: 'str' object has no attribute 'decode'
+# AttributeError: 'str' object has no attribute 'decode' 
 	
 NasNetLarge_model = load_model('models/5.NASNetLarge-new-ISBI19-Model.h5', compile=False)
 
