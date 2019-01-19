@@ -67,7 +67,10 @@
 
 ###########################################################################################################################
 
+from keras.layers import BatchNormalization, add, GlobalAveragePooling2D
 
+model.add(BatchNormalization())
+x = BatchNormalization()(x)
 
 ###########################################################################################################################
 # replace and rename dataframe columns
