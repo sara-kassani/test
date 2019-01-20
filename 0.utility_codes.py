@@ -62,9 +62,11 @@
 
 ###########################################################################################################################
 
+from keras.layers import DepthwiseConv2D
+from keras_applications.imagenet_utils import _obtain_input_shape
 
 
-
+from keras.applications.mobilenet import DepthwiseConv2D, relu6
 ###########################################################################################################################
 
 from keras.layers import BatchNormalization, add, GlobalAveragePooling2D
