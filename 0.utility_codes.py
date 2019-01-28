@@ -52,9 +52,11 @@
 
 ###########################################################################################################################
 
+def get_callbacks(params):
+    callbacks =[EarlyStopping(monitor='val_acc', patience=5, verbose=1)]
+    return callbacks
 
-
-
+      callbacks=get_callbacks(params))
 ###########################################################################################################################
 from keras.preprocessing.image import load_img, img_to_array, array_to_img
 
