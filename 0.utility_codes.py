@@ -52,7 +52,7 @@
 
 ###########################################################################################################################
 
-def get_callbacks(params):
+def get_callbacks(params): 
     callbacks =[EarlyStopping(monitor='val_acc', patience=5, verbose=1)]
     return callbacks
 
