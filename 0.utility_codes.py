@@ -47,7 +47,13 @@
 
 ###########################################################################################################################
 
+trials = Trials()
+best = fmin(f_nn, space, algo=tpe.suggest, max_evals=30, trials=trials)
+print(best)
 
+import gc; gc.enable()
+gc.collect()
+del train_generator, validation_generator
 
 
 ###########################################################################################################################
