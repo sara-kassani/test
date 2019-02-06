@@ -42,7 +42,15 @@
 
 ###########################################################################################################################
 
+ Dear Sara kassani from University of Saskatchewan,
 
+Thank you for your interest in the ICIAR 2018 Grand Challenge!
+
+To download the dataset, please go to http://www.i3s.up.pt/digitalpathology/
+
+Credentials:
+Username: team_405
+Password: Mieb2na0po
 
 
 ###########################################################################################################################
