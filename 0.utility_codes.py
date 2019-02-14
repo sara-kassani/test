@@ -46,7 +46,7 @@
 
 ###########################################################################################################################
 
-trials = Trials() 
+trials = Trials()
 best = fmin(f_nn, space, algo=tpe.suggest, max_evals=30, trials=trials)
 print(best)
 
