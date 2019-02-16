@@ -720,3 +720,28 @@ print(C_n)
 
 
 ####################################################################################################################
+random_seed = np.random.seed(1142)
+
+train_datagen = ImageDataGenerator(
+    rescale=1. / 255,
+    validation_split= 0.25
+    featurewise_center=True,
+    featurewise_std_normalization=True)
+
+train_generator = train_datagen.flow_from_directory(
+    train_dir,
+    target_size=(img_height, img_width),
+    batch_size=batch_size,
+    seed = random_seed,
+    shuffle = True,
+    subset = 'training'
+    class_mode='categorical')
+
+validation_generator = train_datagen.flow_from_directory(
+    train_dir,
+    target_size=(img_height, img_width),
+    batch_size=batch_size,
+    seed = random_seed,
+    shuffle = True,
+    subset = 'validation'
+    class_mode='categorical')
