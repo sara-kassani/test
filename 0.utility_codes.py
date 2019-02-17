@@ -36,6 +36,11 @@
 nb_train_samples = sum([len(files) for r, d, files in os.walk(train_dir)])
 nb_validation_samples = sum([len(files) for r, d, files in os.walk(validation_dir)])
 
+
+nb_train_samples = len(train_generator.filenames)
+nb_validation_samples = len(validation_generator.filenames)
+
+
 ###########################################################################################################################
 
 for i, layer in enumerate(model.layers):
