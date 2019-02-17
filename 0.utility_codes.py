@@ -734,7 +734,7 @@ train_generator = train_datagen.flow_from_directory(
     batch_size=batch_size,
     seed = random_seed,
     shuffle = True,
-    subset = 'training'
+    subset = 'training',
     class_mode='categorical')
 
 validation_generator = train_datagen.flow_from_directory(
@@ -743,5 +743,5 @@ validation_generator = train_datagen.flow_from_directory(
     batch_size=batch_size,
     seed = random_seed,
     shuffle = True,
-    subset = 'validation'
+    subset = 'validation',
     class_mode='categorical')
