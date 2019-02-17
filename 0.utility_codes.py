@@ -724,7 +724,7 @@ random_seed = np.random.seed(1142)
 
 train_datagen = ImageDataGenerator(
     rescale=1. / 255,
-    validation_split= 0.25
+    validation_split= 0.25,
     featurewise_center=True,
     featurewise_std_normalization=True)
 
