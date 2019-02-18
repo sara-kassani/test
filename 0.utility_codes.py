@@ -27,7 +27,13 @@
 
 ###########################################################################################################################
 
+history = model.fit(train_data, train_labels,
+		epochs=epochs,
+		batch_size=batch_size,
+		validation_data=(validation_data, validation_labels))
 
+with open(extracted_features_dir+'history'+model_name+'.txt','w') as f:
+	f.write(str(history.history))
 
 
 ###########################################################################################################################
