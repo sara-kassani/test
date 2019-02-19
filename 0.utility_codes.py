@@ -35,6 +35,21 @@
 ###########################################################################################################################
 
 tn, fp, fn, tp = cm.ravel()
+print("Accuracy:",(tp+tn)/(tp+tn+fp+fn))
+print("Precision:",(tp/(tp+fp)))
+print("Recall:",(tp/(tp+fn)))
+print("tp:", tp) 
+print("fp:", fp) 
+print("tn:",tn) 
+print("fn:",fn) 
+
+
+recall = (tp/(tp+fn))
+precision=(tp/(tp+fp))
+
+f1 = 2 / ( (1/recall) + (1 / precision))
+print('F1 score:', f1)
+
 
 ###########################################################################################################################
 
