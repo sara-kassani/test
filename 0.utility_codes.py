@@ -28,7 +28,19 @@
 
 ###########################################################################################################################
 
+from sklearn.metrics import confusion_matrix, precision_recall_curve, average_precision_score
 
+precision, recall, thresholds = precision_recall_curve(y_test,y_pred)
+average_precision = average_precision_score(y_test,y_pred)
+plt.step(recall, precision, color='k', alpha=0.7, where='post')
+plt.fill_between(recall, precision, step='post', alpha=0.3, color='k')
+
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+plt.ylim([0.0, 1.05])
+plt.xlim([0.0, 1.0])
+
+plt.title('Precision-Recall curve: Average Precision = {0:0.2f}'.format(average_precision))
 
 
 
