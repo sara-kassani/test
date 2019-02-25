@@ -44,7 +44,10 @@ plt.title('Precision-Recall curve: Average Precision = {0:0.2f}'.format(average_
 #####
 plt.plot( recall,precision)
 print (auc(recall,precision))
-
+#####
+fpr, tpr, thresholds = roc_curve(y_test,y_pred)
+plt.plot( fpr, tpr)
+print (auc(fpr, tpr))
 ###########################################################################################################################
 
 tn, fp, fn, tp = cm.ravel()
