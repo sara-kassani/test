@@ -41,7 +41,8 @@ plt.ylim([0.0, 1.05])
 plt.xlim([0.0, 1.0])
 
 plt.title('Precision-Recall curve: Average Precision = {0:0.2f}'.format(average_precision))
-
+#####
+plt.plot( recall,precision)
 
 
 ###########################################################################################################################
