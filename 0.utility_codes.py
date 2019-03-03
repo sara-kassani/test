@@ -23,9 +23,12 @@
 
 ###########################################################################################################################
 
-
-
-
+for X_batch, Y_batch in train_generator:
+for x in X_batch:
+	x = np.expand_dims(x, axis=0)
+	pred = model.predict(X_batch)
+	print(pred.shape)
+	print(X_batch.shape,Y_batch.shape)
 ###########################################################################################################################
 
 from sklearn.metrics import confusion_matrix, precision_recall_curve, average_precision_score
