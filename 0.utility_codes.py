@@ -11,7 +11,26 @@
 
 
 ###########################################################################################################################
+from keras.backend.tensorflow_backend import get_session
+from keras.backend.tensorflow_backend import clear_session
+from keras.backend.tensorflow_backend import set_session
 
+def reset_keras_tf_session():
+    """
+    this function clears the gpu memory and set the 
+    tf session to not use the whole gpu
+    """
+    sess = get_session()
+    clear_session()
+    sess.close()
+    sess = get_session()
+
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    set_session(tf.Session(config=config))
+
+
+reset_keras_tf_session()
 
 
 
