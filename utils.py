@@ -259,35 +259,30 @@ test_dir = "data/wheat/RGB/test"
 
 
 def calculate_tfl_test_acc(model_ft, testloader, device):
-    since = time.time()
     corrects = 0
     total = 0
+    time_elapsed = 0
     # Iterate over data.
     for img, labels in testloader:
         img = img.to(device, dtype=torch.float)
         labels = labels.to(device, dtype=torch.int64)
         with torch.set_grad_enabled(False):
+            since = time.time()
             outputs = model_ft(img)
+            time_elapsed += time.time() - since
             _, preds = torch.max(outputs, 1)
         corrects += torch.sum(preds == labels.data)
         total += labels.size(0)
     test_acc = corrects.double() /total
 
-    time_elapsed = time.time() - since
-    len_test_files = file_count (test_dir,".tif")
-    detection_time = time_elapsed / len_test_files
+    detection_time = time_elapsed / total
 
-    print("Detection time in milliseconds for test set {:.5f}".format( detection_time*1000))
-    print('time elapsed in seconds', str(time_elapsed))
-    print('Detection time in {:.0f}m {:.0f}s'.format(
-    time_elapsed // 60, time_elapsed % 60))
-
+    print("Detection time in seconds for each image in test set {:10.9f}".format( detection_time))
     return test_acc
-import os
+
 
 def calculate_test_acc(model_ft, testloader, device):
-    since = time.time()
-
+    time_elapsed = 0
     corrects = 0
     total = 0
     # Iterate over data.
@@ -296,26 +291,15 @@ def calculate_test_acc(model_ft, testloader, device):
         feature = feature.to(device, dtype=torch.float)
         labels = labels.to(device, dtype=torch.int64)
         with torch.set_grad_enabled(False):
+            since = time.time()
             outputs = model_ft(img, feature)
-
+            time_elapsed += time.time() - since
             _, preds = torch.max(outputs, 1)
         corrects += torch.sum(preds == labels.data)
         total += labels.size(0)
     test_acc = corrects.double() /total
-
-    time_elapsed = time.time() - since
-
-    len_test_files = file_count (test_dir,".tif")
-    detection_time = time_elapsed / len_test_files
-
-    print("Detection time in seconds for test set {:.5f}".format( detection_time*1000))
-
-
-    print('time elapsed in milliseconds', str(time_elapsed))
-    print('Detection time in {:.0f}m {:.0f}s'.format(
-    time_elapsed // 60, time_elapsed % 60))
-
-
+    detection_time = time_elapsed / total
+    print("Detection time in seconds for each image in test set {:10.9f}".format( detection_time))
     return test_acc
 
 
