@@ -1,10 +1,11 @@
 
 
 ###########################################################################################################################
-
-
-
-
+plt.style.use("seaborn-ticks")
+plt.style.use("seaborn-bright")
+plt.style.use("seaborn-whitegrid")
+plt.style.use("fivethirtyeight")
+plt.style.use("classic")
 ###########################################################################################################################
 from datetime import datetime as dt
 def get_experiment_id():
