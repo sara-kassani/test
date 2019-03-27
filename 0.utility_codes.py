@@ -1,4 +1,27 @@
 
+from sklearn.metrics import roc_curve, roc_auc_score, auc
+from sklearn.metrics import accuracy_score, precision_score, f1_score, confusion_matrix
+from sklearn.metrics import classification_report, recall_score
+from sklearn.metrics import precision_recall_curve
+from sklearn.metrics import average_precision_score
+from scipy import interp
+from itertools import cycle
+
+th = 0.3
+
+truth = test_generator.classes
+predict_class = np.argmax(predicts, axis=1)
+
+acc = accuracy_score(truth,predict_class > th)
+prec = precision_score(truth,predict_class > th)
+f1 = f1_score(truth,predict_class > th)
+recall = recall_score(truth,predict_class > th)
+
+print('Accuracy:  {:.4f}'.format(acc))
+print('Precision: {:.4f}'.format(prec))
+print('Recall:    {:.4f}'.format(recall))
+print('F1:        {:.4f}'.format(f1))
+
 
 ###########################################################################################################################
 plt.style.use("seaborn-ticks")
