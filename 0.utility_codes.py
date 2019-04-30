@@ -1,3 +1,10 @@
+
+base_model1=ResNet50(weights='imagenet', include_top=False, input_shape=input_shape)
+lastLayer = base_model1.layers[-1].output
+x1=GlobalAveragePooling2D()(lastLayer)
+###########################################################################################################################
+
+
 from sklearn.metrics import roc_curve, roc_auc_score, auc
 from sklearn.metrics import accuracy_score, precision_score, f1_score, confusion_matrix
 from sklearn.metrics import classification_report, recall_score
