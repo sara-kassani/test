@@ -77,6 +77,8 @@ reset_keras_tf_session()
 ###########################################################################################################################
 # Binary roc curve
 from keras.utils import layer_utils, np_utils
+from scipy import interp
+from itertools import cycle
 
 # generate roc curve
 n_classes = 2
