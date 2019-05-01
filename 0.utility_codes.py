@@ -212,7 +212,6 @@ plt.show()
 
 # Visualize misclassified images
 
-
 from keras.preprocessing.image import load_img, img_to_array, array_to_img
 
 predicted_classes = Y_test_predicted
@@ -243,6 +242,18 @@ for i in range(len(errors)):
     plt.title(title)
     plt.imshow(original)
 plt.show()
+#############################################
+# Print only names of files
+for i in range(len(errors)):
+    pred_class = np.argmax(predicts[errors[i]])
+    pred_label = idx2label[pred_class]
+    
+    title = 'Original label:{}, Prediction :{}, confidence : {:.3f}, class ID : {}'.format(
+        fnames[errors[i]].split('/')[0],
+        pred_label,
+        predicts[errors[i]][pred_class], pred_class)
+    print(fnames[errors[i]])  
+
 
 ###########################################################################################################################
 
