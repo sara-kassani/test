@@ -256,9 +256,39 @@ for i in range(len(errors)):
 
 
 ###########################################################################################################################
+# Visualize misclassified images - NPY
+from keras.preprocessing.image import load_img, img_to_array, array_to_img
+
+fnames = test_generator.filenames
+label2index = test_generator.class_indices
+# Getting the mapping from class index to class label
+idx2label = dict((v,k) for k,v in label2index.items())
 
 
+errors = np.where(predictions != ground_truth)[0]
+print("No of errors = {}/{}".format(len(errors),validation_generator.samples))
 
+# Show the errors
+for i in range(len(errors)):
+    pred_class = np.argmax(prob[errors[i]])
+    pred_label = idx2label[pred_class]
+    
+    title = 'Original label:{}, Prediction :{}, confidence : {:.3f}, class ID : {}'.format(
+        fnames[errors[i]].split('/')[0],
+        pred_label,
+        prob[errors[i]][pred_class], pred_class)
+    
+    original = load_img('{}/{}'.format(test_dir,fnames[errors[i]]))
+    plt.figure(figsize=[7,7])
+    plt.axis('off')
+    plt.title(title)
+    plt.imshow(original)
+plt.show()
+
+#############################################
+# Print only names of files
+for i in range(len(errors)):
+        print(fnames[errors[i]])
 
 ###########################################################################################################################
 
