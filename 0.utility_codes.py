@@ -1,5 +1,5 @@
 
-base_model1=ResNet50(weights='imagenet', include_top=False, input_shape=input_shape) 
+base_model1=ResNet50(weights='imagenet', include_top=False, input_shape=input_shape)  
 lastLayer = base_model1.layers[-1].output
 x1=GlobalAveragePooling2D()(lastLayer)
 ###########################################################################################################################
