@@ -1,4 +1,15 @@
 
+
+
+
+from tensorflow.python.client import device_lib
+def get_available_gpus():
+    local_device_protos = device_lib.list_local_devices()
+    return [x.name for x in local_device_protos if x.device_type == 'GPU']
+
+GPUs = get_available_gpus()
+
+###########################################################################################################################
 base_model1=ResNet50(weights='imagenet', include_top=False, input_shape=input_shape)
 lastLayer = base_model1.layers[-1].output
 x1=GlobalAveragePooling2D()(lastLayer)
