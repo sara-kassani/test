@@ -2,6 +2,21 @@
 
 
 
+###########################################################################################################################
+def mean_class_accuracy(scores, labels):
+    pred = np.argmax(scores, axis=1)
+    cf = confusion_matrix(labels, pred).astype(float)
+
+    cls_cnt = cf.sum(axis=1)
+    cls_hit = np.diag(cf)
+
+    return np.mean(cls_hit / cls_cnt)
+
+mean_class_accuracy(scores = preds, labels=y_true)
+###########################################################################################################################
+
+
+
 from tensorflow.python.client import device_lib
 def get_available_gpus():
     local_device_protos = device_lib.list_local_devices()
