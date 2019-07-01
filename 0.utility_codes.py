@@ -2,6 +2,15 @@
 
 
 
+
+###########################################################################################################################
+
+
+
+###########################################################################################################################
+
+
+
 ###########################################################################################################################
 def mean_class_accuracy(scores, labels):
     pred = np.argmax(scores, axis=1)
@@ -15,6 +24,16 @@ def mean_class_accuracy(scores, labels):
 mean_class_accuracy(scores = preds, labels=y_true)
 ###########################################################################################################################
 
+prediction = model.predict(test_data)
+accuracy = 0
+
+for i, predict in enumerate(prediction):
+
+    if np.argmax(predict) == y_true[i]:
+        accuracy += 1
+
+print("Average classification accuracy:", accuracy/len(prediction))
+###########################################################################################################################
 
 
 from tensorflow.python.client import device_lib
