@@ -4,60 +4,7 @@
 
 ###########################################################################################################################
 
-c1 = model.layers[11].output 
-c1 = GlobalAveragePooling2D()(c1)       
 
-c2 = model.layers[21].output
-c2 = GlobalAveragePooling2D()(c2)       
-
-c3 = model.layers[28].output
-c3 = GlobalAveragePooling2D()(c3)       
-
-c4 = model.layers[51].output
-c4 = GlobalAveragePooling2D()(c4) 
-
-c5 = model.layers[84].output
-c5 = GlobalAveragePooling2D()(c5) 
-
-c6 = model.layers[103].output
-c6 = GlobalAveragePooling2D()(c6) 
-
-c7 = model.layers[117].output
-c7 = GlobalAveragePooling2D()(c7) 
-
-c8 = model.layers[129].output
-c8 = GlobalAveragePooling2D()(c8) 
-
-c9 = model.layers[143].output
-c9 = GlobalAveragePooling2D()(c9) 
-
-c10 = model.layers[162].output
-c10 = GlobalAveragePooling2D()(c10) 
-
-c11 = model.layers[210].output
-c11 = GlobalAveragePooling2D()(c11) 
-
-c12 = model.layers[258].output
-c12 = GlobalAveragePooling2D()(c12) 
-
-c13 = model.layers[306].output
-c13 = GlobalAveragePooling2D()(c13) 
-
-c14 = model.layers[356].output
-c14 = GlobalAveragePooling2D()(c14) 
-
-c15 = model.layers[377].output
-c15 = GlobalAveragePooling2D()(c15) 
-
-c16 = model.layers[415].output
-c16 = GlobalAveragePooling2D()(c16) 
-
-c17 = model.layers[421].output
-c17 = GlobalAveragePooling2D()(c17) 
-
-con = concatenate([c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16])
-
-bottleneck_final_model = Model(inputs=model.input, outputs=con)
 
 ###########################################################################################################################
 
