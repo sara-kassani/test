@@ -1,19 +1,4 @@
 
-input_tensor = Input(shape = input_shape)  
-
-base_model1=InceptionV3(input_shape= input_shape,weights=inception_weights, include_top=False, input_tensor=input_tensor)
-base_model2=Xception(input_shape= input_shape,weights=xception_weights, include_top=False, input_tensor=input_tensor)
-
-x1 = base_model1.output
-x1 = GlobalAveragePooling2D()(x1)
-
-x2 = base_model2.output
-x2 = GlobalAveragePooling2D()(x2)
-
-merge = concatenate([x1, x2])
-predictions = Dense(num_classes, activation='softmax')(merge)
-
-model = Model(inputs=input_tensor,outputs=predictions)
 
 
 
