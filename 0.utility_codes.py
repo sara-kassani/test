@@ -8,7 +8,18 @@
 
 ######################################################
 
+def list_directory(path):
+    
+    list_dir=[]   
+    for i, folder in enumerate(os.listdir(path)):
+        
+        folder_abspath = os.path.join(path, folder)
+        list_dir.append(folder_abspath)
+    
+    return list_dir
 
+
+list_directory("data/")
 
 
 ###########################################################################################################################
