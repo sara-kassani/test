@@ -147,14 +147,7 @@ plt.style.use("bmh")
 plt.style.use("grayscale")
 
 ###########################################################################################################################
-from datetime import datetime as dt
-def get_experiment_id():
-    time_str = dt.now().strftime('%Y-%m-%d-%H-%M-%S')
-    experiment_id = 'Inceptin_{}'.format(time_str)
 
-    return experiment_id
-
-experiment_id = get_experiment_id()
 
 
 
