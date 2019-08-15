@@ -100,7 +100,16 @@ def mean_class_accuracy(scores, labels):
 mean_class_accuracy(scores = preds, labels=y_true)
 ###########################################################################################################################
 
+base_model1=InceptionResNetV2(input_shape= input_shape,weights=inception_resnet_v2_weights, include_top=False, input_tensor=input_tensor)
 
+for layer in base_model1.layers:
+        layer.name += '_1'
+
+base_model2=InceptionResNetV2(input_shape= input_shape,weights=inception_resnet_v2_weights, include_top=False, input_tensor=input_tensor)
+
+for layer in base_model1.layers:
+        layer.name += '_2'
+	
 ###########################################################################################################################
 
 
