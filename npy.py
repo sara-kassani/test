@@ -34,7 +34,7 @@ for i in range(1367, 2366):
         continue
 
     img = cv2.imread(DIR_DATA + f"Images/ISIC_{num}.png")
-    img = cv2.resize(img, (128, 128))
+    img = cv2.resize(img, (256, 256))
 
     get_mask(img, num)
 
