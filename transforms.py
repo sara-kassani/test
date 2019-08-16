@@ -13,17 +13,7 @@ import math
 
 
 
-class OneOf:
-    def __init__(self, transforms, prob=0.5):
-        self.transforms = transforms
-        self.prob = prob
 
-    def __call__(self, x, mask=None):
-        if random.random() < self.prob:
-            t = random.choice(self.transforms)
-            t.prob = 1.
-            x, mask = t(x, mask)
-        return x, mask
 
 
 class OneOrOther:
