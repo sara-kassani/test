@@ -38,5 +38,5 @@ for i in range(1367, 2366):
 
     get_mask(img, num)
 
-    with open(DIR_NUMPYDATA + f"ISIC_{num}_IMG.npy", "w") as f:
-        np.save(DIR_NUMPYDATA + f"ISIC_{num}_IMG", img)
+    with open(DIR_NUMPYDATA + f"ISIC_{num}_.npy", "w") as f:
+        np.save(DIR_NUMPYDATA + f"ISIC_{num}_", img)
