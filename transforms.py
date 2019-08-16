@@ -16,21 +16,6 @@ import math
 
 
 
-class OneOrOther:
-    def __init__(self, first, second, prob=0.5):
-        self.first = first
-        first.prob = 1.
-        self.second = second
-        second.prob = 1.
-        self.prob = prob
-
-    def __call__(self, x, mask=None):
-        if random.random() < self.prob:
-            x, mask = self.first(x, mask)
-        else:
-            x, mask = self.second(x, mask)
-        return x, mask
-
 
 class ImageOnly:
     def __init__(self, trans):
