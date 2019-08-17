@@ -1180,3 +1180,9 @@ epochs=100, validation_data=(valid_X, valid_y), workers=4)
 pred_y = model.predict(test_X)
 pred_y = np.argmax(pred_y, 1)
 
+####################################################################################################################
+model.fit(X_train, Y_train, validation_data=(X_valid,Y_valid),batch_size=32, \
+              epochs=10, verbose=1)
+score = model.evaluate(X_test, Y_test)
+result = model.predict(X_test)
+f1_score(Y_test, result, average='weighted')
