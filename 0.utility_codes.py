@@ -1158,3 +1158,16 @@ print(C_n)
 
 model.compile(loss='categorical_crossentropy', optimizer='rmsprop',
 metrics = ['categorical_accuracy', 'precision', 'recall', 'fmeasure'])
+####################################################################################################################
+from sklearn.metrics import precision_score, recall_score, accuracy_score, f1_score
+
+model.fit_generator(datagen.flow(x_train, y_train,
+                        batch_size=batch_size),
+                        epochs=epochs,
+                        workers=4)
+
+y_pred = np.argmax(model.predict(x_test), axis=-1)
+print(precision_score(y_test, y_pred, average='macro'))
+print(recall_score(y_test, y_pred, average='macro'))
+print(accuracy_score(y_test, y_pred))
+print(f1_score(y_test, y_pred, average='macro'))
