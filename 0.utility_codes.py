@@ -1153,3 +1153,8 @@ print(C_n)
 #     classification_report(
 #         test_generator.classes, y_pred, target_names=target_names))
 
+
+####################################################################################################################
+
+model.compile(loss='categorical_crossentropy', optimizer='rmsprop',
+metrics = ['categorical_accuracy', 'precision', 'recall', 'fmeasure'])
