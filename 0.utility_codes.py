@@ -1225,3 +1225,8 @@ return tn / (tn + fp)
 
 print_all_metrics(y_true,y_pred)
 
+####################################################################################################################
+
+from tensorflow.python.client import device_lib
+device_lib.list_local_devices()
+
