@@ -1137,3 +1137,19 @@ validation_generator = train_datagen.flow_from_directory(
     shuffle = True,
     subset = 'validation',
     class_mode='categorical')
+####################################################################################################################
+from sklearn.metrics import classification_report, confusion_matrix
+
+#Confution Matrix and Classification Report
+Y_pred = model.predict_generator(test_generator)
+y_pred = np.argmax(Y_pred, axis=1)
+print('Confusion Matrix')
+C = confusion_matrix(test_generator.classes, y_pred)
+C_n = C.astype('float') / C.sum(axis=1)[:, np.newaxis]
+print(C_n)
+# print('Classification Report')
+# target_names = ['0', '1', '2', '3']
+# print(
+#     classification_report(
+#         test_generator.classes, y_pred, target_names=target_names))
+
