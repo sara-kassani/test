@@ -1171,3 +1171,12 @@ print(precision_score(y_test, y_pred, average='macro'))
 print(recall_score(y_test, y_pred, average='macro'))
 print(accuracy_score(y_test, y_pred))
 print(f1_score(y_test, y_pred, average='macro'))
+####################################################################################################################
+
+
+history = model.fit_generator(datagen.flow(train_X, train_y, batch_size=128),
+epochs=100, validation_data=(valid_X, valid_y), workers=4)
+
+pred_y = model.predict(test_X)
+pred_y = np.argmax(pred_y, 1)
+
