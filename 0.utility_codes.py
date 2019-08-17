@@ -1186,3 +1186,42 @@ model.fit(X_train, Y_train, validation_data=(X_valid,Y_valid),batch_size=32, \
 score = model.evaluate(X_test, Y_test)
 result = model.predict(X_test)
 f1_score(Y_test, result, average='weighted')
+####################################################################################################################
+####################################################################################################################
+model.fit(x_train, y_train, nb_epoch=5, batch_size=64, class_weight=myclass_weight)
+
+	#Evaluate the scores of the model
+	scores = model.evaluate(x_test, y_test, verbose=0)
+	print("Accuracy: %.2f%%" % (scores[1]*100))
+	probas = model.predict(x_test)
+	pred_indices = np.argmax(probas, axis=1)
+	classes = np.array(range(0,9))
+	preds = classes[pred_indices]
+	#model.save('../models/cnn_model4.h5')
+	print('Log loss: {}'.format(log_loss(classes[np.argmax(y_test, axis=1)], probas)))
+print('Accuracy: {}'.format(accuracy_score(classes[np.argmax(y_test, axis=1)], preds))) 
+####################################################################################################################
+predictions = np.round(model_mura.predict_generator(test_generator, steps=3197//1))
+predictions = predictions.flatten()
+y_true = test_generator.classes
+
+def print_all_metrics(y_true, y_pred):
+    print("roc_auc_score: ", roc_auc_score(y_true, y_pred))
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+
+    print("Sensitivity: ", get_sensitivity(tp, fn))
+    print("Specificity: ", get_specificity(tn, fp))
+    print("Cohen-Cappa-Score: ", cohen_kappa_score(y_true, y_pred))
+    print("F1 Score: ", f1_score(y_true, y_pred))
+
+
+def get_sensitivity(tp, fn):
+    return tp / (tp + fn)
+
+
+def get_specificity(tn, fp):
+return tn / (tn + fp)
+
+
+print_all_metrics(y_true,y_pred)
+
