@@ -4,6 +4,18 @@
 
 
 
+###########################################################################################################################
+
+prediction = model.predict(test_data)
+accuracy = 0
+
+for i, predict in enumerate(prediction):
+
+    if np.argmax(predict) == y_true[i]:
+        accuracy += 1
+
+print("Average classification accuracy:", accuracy/len(prediction))
+
 
 ###########################################################################################################################
 
