@@ -1,4 +1,23 @@
 
+
+
+
+
+###########################################################################################################################
+
+
+
+###########################################################################################################################
+def mean_class_accuracy(scores, labels):
+    pred = np.argmax(scores, axis=1)
+    cf = confusion_matrix(labels, pred).astype(float)
+
+    cls_cnt = cf.sum(axis=1)
+    cls_hit = np.diag(cf)
+
+    return np.mean(cls_hit / cls_cnt)
+
+mean_class_accuracy(scores = preds, labels=y_true)
 ###########################################################################################################################
 
 base_model1=InceptionResNetV2(input_shape= input_shape,weights=inception_resnet_v2_weights, include_top=False, input_tensor=input_tensor)
