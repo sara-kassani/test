@@ -1,6 +1,49 @@
 
 
 
+
+
+
+
+###########################################################################################################################
+
+
+    fig1, ax1 = plt.subplots(figsize=(11, 8))
+    ax1.plot(range(epoch+1), avg_scores_per_epoch)
+    ax1.set_title("Average validation accuracy vs epochs")
+    ax1.set_xlabel("Epoch")
+    ax1.set_ylabel("Avg. val. accuracy")
+    plt.savefig('accuracy_vs_epochs.png')
+    plt.clf()
+
+    fig2, ax2 = plt.subplots(figsize=(11, 8))
+    ax2.plot(range(epoch+1), avg_loss_per_epoch,'r')
+    ax2.plot(range(epoch+1), valid_loss_per_epoch,'b')
+    ax2.set_title("loss vs epochs")
+    ax2.set_xlabel("Epoch")
+    ax2.set_ylabel("loss")
+    plt.legend(['train', 'val'], loc='lower right')
+    plt.savefig('loss_vs_epochs.png')
+    plt.clf()
+
+    fig3, ax3 = plt.subplots(figsize=(11, 8))
+    ax3.plot(range(epoch+1), avg_iou_per_epoch)
+    ax3.set_title("Average IoU vs epochs")
+    ax3.set_xlabel("Epoch")
+    ax3.set_ylabel("Current IoU")
+    plt.savefig('iou_vs_epochs.png')
+    plt.clf()
+
+    fig4, ax4 = plt.subplots(figsize=(11, 8))
+    ax4.plot(range(epoch + 1), avg_acc_per_epoch,'r')
+    ax4.plot(range(epoch + 1), avg_scores_per_epoch,'b')
+    ax4.set_title("Accuracy vs epochs")
+    ax4.set_xlabel("Epoch")
+    ax4.set_ylabel("Accuracy")
+    plt.legend(['train', 'val'], loc='lower right')
+    plt.savefig('train_valid_acc.png')
+    plt.clf()
+    plt.close('all')
 ###########################################################################################################################
 
 
