@@ -116,7 +116,7 @@ for layer in base_model1.layers:
 
 base_model2=InceptionResNetV2(input_shape= input_shape,weights=inception_resnet_v2_weights, include_top=False, input_tensor=input_tensor)
 
-for layer in base_model1.layers:
+for layer in base_model2.layers:
         layer.name += '_2'
 	
 ###########################################################################################################################
