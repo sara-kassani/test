@@ -1,7 +1,23 @@
 
 
 
+y_pred_class = model.predict(test_data, verbose=1)
 
+y_pred_class = [np.argmax(r) for r in y_pred_class]
+test_y = [np.argmax(r) for r in test_labels]
+
+
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, cohen_kappa_score, roc_auc_score, roc_curve
+
+# Precision
+print('Precision = ', precision_score(test_y, y_pred_class, average='weighted'))
+# (None, 'micro', 'macro', 'weighted', 'samples')
+
+# Recall
+print('Recall = ', recall_score(test_y, y_pred_class, average='weighted'))
+
+# f1_score
+print('f1_score = ', f1_score(test_y, y_pred_class, average='weighted'))
 
 ######################################################
 
