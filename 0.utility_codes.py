@@ -1,5 +1,38 @@
 
 
+###########################################################################################################################
+
+
+
+###########################################################################################################################
+
+
+
+###########################################################################################################################
+
+
+
+
+###########################################################################################################################
+
+from sklearn.metrics import roc_auc_score
+from sklearn.preprocessing import LabelBinarizer
+
+def multiclass_roc_auc_score(y_test, y_pred, average="weighted"):
+    label_binarizer = LabelBinarizer()
+    label_binarizer.fit(y_test)
+
+    truth = label_binarizer.transform(y_test)
+    pred = label_binarizer.transform(y_pred)
+    return roc_auc_score(truth, pred, average=average)
+# roc_auc_score
+print('roc_auc_score = ', multiclass_roc_auc_score(test_y, y_pred_class))
+
+
+
+###########################################################################################################################
+
+
 
 y_pred_class = model.predict(test_data, verbose=1)
 
