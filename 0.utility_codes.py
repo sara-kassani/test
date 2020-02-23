@@ -3,7 +3,11 @@ Parameters testing:
 
 ###########################################################################################################################
 
+output_filename = "DigestPath_DenseNet121_SGD1_125Epochs"
+dir_name = "/kaggle/working"
 
+import shutil
+shutil.make_archive(output_filename, "zip", dir_name)
 
 ###########################################################################################################################
 
