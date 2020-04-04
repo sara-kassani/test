@@ -1,6 +1,51 @@
-Parameters testing: 
-{'act_reg': 1e-07, 'hidden3': 128, 'hidden2': 2048, 'beta_2': 0.7, 'activation_function': 'softplus', 'ker_reg': 1e-06, 'hidden1': 2048, 'bias_reg': 0.0001, 'beta_1': 0.9, 'hidden4': 16, 'lr': 0.0001}
+start = int(time.time() * 1000.0)
+bottleneck_features_train = bottleneck_final_model.predict_generator(train_generator, predict_size_train)
+np.save(extracted_features_dir+'bottleneck_features_train_'+descriptor_model_name+'.npy', bottleneck_features_train)
 
+bottleneck_features_validation = bottleneck_final_model.predict_generator(validation_generator, predict_size_validation)
+np.save(extracted_features_dir+'bottleneck_features_validation_'+descriptor_model_name+'.npy', bottleneck_features_validation)
+
+bottleneck_features_test = bottleneck_final_model.predict_generator(test_generator, predict_size_test)
+np.save(extracted_features_dir+'bottleneck_features_test_'+descriptor_model_name+'.npy', bottleneck_features_test)
+end = int(time.time() * 1000.0)
+timeElapsed = end - start
+
+seconds=(timeElapsed/1000)%60
+
+print('time elapsed in miliseconds', timeElapsed)
+print('time elapsed in seconds', seconds)
+
+
+****************************************************************
+start = int(time.time() * 1000.0)
+
+clf.fit(train_data, y_train)
+
+
+end = int(time.time() * 1000.0)
+timeElapsed = end - start
+
+seconds=(timeElapsed/1000)%60
+
+print('time elapsed in miliseconds', timeElapsed)
+print('time elapsed in seconds', seconds)
+********************************************************************
+start = int(time.time() * 1000.0)
+
+lgbm.fit(train_data, y_train)
+
+
+end = int(time.time() * 1000.0)
+timeElapsed = end - start
+
+seconds=(timeElapsed/1000)%60
+
+print('time elapsed in miliseconds', timeElapsed)
+print('time elapsed in seconds', seconds)
+
+y_pred=lgbm.predict(test_data)
+print(classification_report(y_test, y_pred))
+print(accuracy_score(y_test, y_test_pred))
 ###########################################################################################################################
 
 output_filename = "DigestPath_DenseNet121_SGD1_125Epochs"
