@@ -1,3 +1,7 @@
+print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+****************************************************************
+
+
 start = int(time.time() * 1000.0)
 bottleneck_features_train = bottleneck_final_model.predict_generator(train_generator, predict_size_train)
 np.save(extracted_features_dir+'bottleneck_features_train_'+descriptor_model_name+'.npy', bottleneck_features_train)
