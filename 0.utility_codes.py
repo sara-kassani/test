@@ -1,7 +1,16 @@
 print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 ****************************************************************
+import tensorflow as tf
+if tf.test.gpu_device_name()=='':
+    print("You do not have GPU access.") 
+    print("Did you change your runtime ?")
+    print("If the runtime setting is correct then Google did not allocate a GPU for your session")
+    print("Expect slow performance. To access GPU try reconnecting later")
 
-
+else:
+    print("You have GPU access")
+    !nvidia-smi
+****************************************************************
 start = int(time.time() * 1000.0)
 bottleneck_features_train = bottleneck_final_model.predict_generator(train_generator, predict_size_train)
 np.save(extracted_features_dir+'bottleneck_features_train_'+descriptor_model_name+'.npy', bottleneck_features_train)
